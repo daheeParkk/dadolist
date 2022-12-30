@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.repository.CategoryMapper">
+    
+    <resultMap id="categoryResultMap" type="org.example.domain.Category">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <insert id="createCategory" parameterType="org.example.domain.Category">
+        insert into category
+            (content)
+        values (#{content})
+        <selectKey resultType="Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="selectCategory" parameterType="java.lang.Long" resultMap="categoryResultMap">
+        select * from category where id = #{id} and is_deleted = false
+    </select>
+
+    <select id="getCategory" resultMap="categoryResultMap">
+        select * from category where is_deleted = false
+    </select>
+
+    <update id="updateCategory" parameterType="org.example.domain.Category">
+        update category set
+                            content = #{content}
+        where id = #{id}
+    </update>
+
+    <update id="softDelete">
+        update category set
+                            is_deleted = #{isDeleted}
+        where id = #{id}
+    </update>
+
+</mapper>

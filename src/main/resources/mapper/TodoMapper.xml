@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.repository.TodoMapper">
+
+    <resultMap id="todoResultMap" type="org.example.domain.Todo">
+        <id column="id" property="id" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="is_deleted" property="isDeleted" />
+<!--        <association property="category" column="category_id" javaType="org.example.domain.Category">-->
+<!--            <id column="id" property="id" />-->
+<!--            <result column="created_at" property="createdAt" />-->
+<!--            <result column="updated_at" property="updatedAt" />-->
+<!--            <result column="is_deleted" property="isDeleted" />-->
+<!--        </association>-->
+
+    </resultMap>
+
+    <insert id="writeTodo" parameterType="org.example.domain.Todo">
+        insert into todo
+            (content, deadline, category_id)
+        values (#{content}, #{deadline}, #{categoryId})
+    </insert>
+
+    <select id="getTodo" resultMap="todoResultMap">
+        select * from todo
+        where id = #{todoId} and is_deleted = false
+    </select>
+
+    <select id="getTodoList" resultMap="todoResultMap">
+        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
+        where t.is_deleted = false
+        union
+        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
+        where t.is_deleted = false
+    </select>
+
+    <select id="getTeamTodoListByTeamId" resultMap="todoResultMap">
+        select t.id, te.id as team_id, te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 join team te on ttm.team_id = te.id and te.id = #{teamId}
+        where t.is_deleted = false
+    </select>
+    
+    <select id="getTeamTodoListByTeamName" resultMap="todoResultMap">
+        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 join team te on ttm.team_id = te.id and te.name = #{teamName}
+        where t.is_deleted = false
+    </select>
+
+    <select id="getTodoListByMonth" resultMap="todoResultMap">
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
+        where month(deadline) = #{month} and t.is_deleted = false
+        union
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
+        where month(deadline) = #{month} and t.is_deleted = false
+    </select>
+
+    <select id="getTodoListByDays" resultMap="todoResultMap">
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
+        where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
+        union
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
+        where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
+    </select>
+
+    <select id="getTodoListByCategory" resultMap="todoResultMap">
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
+        where c.content = #{category} and t.is_deleted = false
+        union
+        select te.name as team_name, t.content, t.deadline, c.content as category
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
+                 left outer join team te on ttm.team_id = te.id
+                 join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
+        where c.content = #{category} and t.is_deleted = false
+    </select>
+
+    <update id="updateTodo" parameterType="org.example.domain.Todo">
+        update todo set
+                        content = #{content},
+                        deadline = #{deadline},
+                        category_id = #{categoryId}
+        where id = #{id}
+    </update>
+
+    <update id="softDelete">
+        update todo set
+                        is_deleted = #{isDeleted}
+        where id = #{id}
+    </update>
+
+</mapper>
