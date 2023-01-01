@@ -30,4 +30,6 @@ public interface TodoMapper {
 
     void softDelete(@Param("isDeleted") Boolean isDeleted, @Param("id") Long id);
 
+    void teamWriteTodo(@Param("teamId") Long teamId, @Param("todo") Todo todo);
+
 }

@@ -29,10 +29,10 @@ public class TodoController {
 
     }
 
-    @PatchMapping("/user/{id}")
-    public Todo userUpdateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo) {
+    @PutMapping("/{id}")
+    public Todo updateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo) {
 
-        return todoService.userUpdateTodo(id, requestTodo);
+        return todoService.updateTodo(id, requestTodo);
 
     }
 
@@ -47,13 +47,6 @@ public class TodoController {
     public Todo teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
 
         return todoService.teamWriteTodo(teamId, todo);
-
-    }
-
-    @PatchMapping("/team/{id}")
-    public Todo teamUpdateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo){
-
-        return todoService.teamUpdateTodo(id, requestTodo);
 
     }
 

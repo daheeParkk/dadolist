@@ -29,91 +29,81 @@
     </select>
 
     <select id="getTodoList" resultMap="todoResultMap">
-        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where t.is_deleted = false
         union
-        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
         where t.is_deleted = false
     </select>
 
     <select id="getTeamTodoListByTeamId" resultMap="todoResultMap">
-        select t.id, te.id as team_id, te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.id as teamId, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 join team te on ttm.team_id = te.id and te.id = #{teamId}
+                 join team te on t.team_id = te.id and te.id = #{teamId}
         where t.is_deleted = false
     </select>
     
     <select id="getTeamTodoListByTeamName" resultMap="todoResultMap">
-        select t.id, te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 join team te on ttm.team_id = te.id and te.name = #{teamName}
+                 join team te on t.team_id = te.id and te.name = #{teamName}
         where t.is_deleted = false
     </select>
 
     <select id="getTodoListByMonth" resultMap="todoResultMap">
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where month(deadline) = #{month} and t.is_deleted = false
         union
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
         where month(deadline) = #{month} and t.is_deleted = false
     </select>
 
     <select id="getTodoListByDays" resultMap="todoResultMap">
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
         union
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
         where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
     </select>
 
     <select id="getTodoListByCategory" resultMap="todoResultMap">
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as name, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where c.content = #{category} and t.is_deleted = false
         union
-        select te.name as team_name, t.content, t.deadline, c.content as category
+        select t.id, te.name as name, t.content, t.deadline, c.content as category
         from todo t
                  left outer join category c on t.category_id = c.id
-                 left outer join todo_team_mapping ttm on t.id = ttm.todo_id
-                 left outer join team te on ttm.team_id = te.id
+                 left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
         where c.content = #{category} and t.is_deleted = false
     </select>
@@ -122,7 +112,8 @@
         update todo set
                         content = #{content},
                         deadline = #{deadline},
-                        category_id = #{categoryId}
+                        category_id = #{categoryId},
+                        team_id = #{teamId}
         where id = #{id}
     </update>
 
@@ -131,5 +122,11 @@
                         is_deleted = #{isDeleted}
         where id = #{id}
     </update>
+
+    <insert id="teamWriteTodo">
+        insert into todo
+            (content, deadline, category_id, team_id)
+        values (#{content}, #{deadline}, #{categoryId}, #{teamId})
+    </insert>
 
 </mapper>

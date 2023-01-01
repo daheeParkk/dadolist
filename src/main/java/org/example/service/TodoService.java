@@ -10,13 +10,11 @@ public interface TodoService {
 
     Todo userWriteTodo(Long userId, Todo todo);
 
-    Todo userUpdateTodo(Long id, RequestTodo requestTodo);
+    Todo updateTodo(Long id, RequestTodo requestTodo);
 
     List<Todo> userDeleteTodo(Long userId, Long todoId);
 
     Todo teamWriteTodo(Long teamId, Todo todo);
-
-    Todo teamUpdateTodo(Long id, RequestTodo requestTodo);
 
     List<Todo> teamDeleteTodo(Long teamId, Long todoId);
 

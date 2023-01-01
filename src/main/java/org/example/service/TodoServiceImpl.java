@@ -1,10 +1,8 @@
 package org.example.service;
 
 import org.example.domain.Todo;
-import org.example.dto.todo.GetTodoList;
 import org.example.dto.todo.RequestTodo;
 import org.example.repository.TodoMapper;
-import org.example.repository.TodoTeamMapper;
 import org.example.repository.TodoUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +16,12 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoUserMapper todoUserMapper;
 
-    private final TodoTeamMapper todoTeamMapper;
 
     @Autowired
-    public TodoServiceImpl(TodoMapper todoMapper, TodoUserMapper todoUserMapper, TodoTeamMapper todoTeamMapper) {
+    public TodoServiceImpl(TodoMapper todoMapper, TodoUserMapper todoUserMapper) {
 
         this.todoMapper = todoMapper;
         this.todoUserMapper = todoUserMapper;
-        this.todoTeamMapper = todoTeamMapper;
 
     }
 
@@ -40,7 +36,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo userUpdateTodo(Long id, RequestTodo requestTodo) {
+    public Todo updateTodo(Long id, RequestTodo requestTodo) {
 
         Todo todo = todoMapper.getTodo(id);
         todo.update(requestTodo);
@@ -61,19 +57,9 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo teamWriteTodo(Long teamId, Todo todo) {
 
-        todoMapper.writeTodo(todo);
+        todoMapper.teamWriteTodo(teamId, todo);
         Long todoId = todo.getId();
-        todoTeamMapper.createTodoTeam(teamId, todoId);
         return todoMapper.getTodo(todoId);
-
-    }
-
-    @Override
-    public Todo teamUpdateTodo(Long id, RequestTodo requestTodo) {
-
-        Todo todo = todoMapper.getTodo(id);
-        todo.update(requestTodo);
-        return todoMapper.getTodo(id);
 
     }
 
@@ -81,7 +67,6 @@ public class TodoServiceImpl implements TodoService {
     public List<Todo> teamDeleteTodo(Long teamId, Long todoId) {
 
         todoMapper.softDelete(true, todoId);
-        todoTeamMapper.softDelete(true, todoId);
         return todoMapper.getTeamTodoListByTeamId(teamId);
 
     }
