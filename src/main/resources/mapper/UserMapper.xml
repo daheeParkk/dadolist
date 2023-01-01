@@ -14,7 +14,7 @@
     <insert id="createUser" parameterType="org.example.domain.User">
         insert into user
             (name, nickname, user_id, password, email)
-        values (#{name}, #{userId}, #{nickname}, #{password}, #{email})
+        values (#{name}, #{nickname}, #{userId}, #{password}, #{email})
         <selectKey resultType="Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -59,7 +59,7 @@
     </select>
 
     <select id="selectUser" parameterType="java.lang.Long" resultMap="userResultMap">
-        select u.name,u.nickname,u.user_id,password,email,t.name as team
+        select u.id, u.name, u.nickname, u.user_id, password, email, t.name
         from user u left outer join team_user_mapping tum on u.id = tum.user_id
                     left outer join team t on t.id = tum.team_id
         where u.id = #{id} and u.is_deleted = false

@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService{
             return response;
         }
 
-        if(!bcryptUtil.isEquals(info.getPassword(), requestLogin.getPassword())) {
+        if(!bcryptUtil.isEquals(info.getPassword(), bcryptUtil.encrypt(requestLogin.getPassword()))) {
             response.put("result", "password not match");
             return response;
         }
