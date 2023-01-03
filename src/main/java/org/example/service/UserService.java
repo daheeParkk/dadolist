@@ -9,6 +9,8 @@ import java.util.Map;
 
 public interface UserService {
 
+    void createAdmin(User user);
+
     void createUser(User user);
 
     Map<String, String> login(RequestLogin requestLogin);

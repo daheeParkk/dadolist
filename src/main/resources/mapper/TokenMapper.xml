@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.repository.TokenMapper">
+
+    <resultMap id="tokenResultMap" type="org.example.dto.token.JwtToken">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="refresh_token" property="refreshToken" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <insert id="createRefreshToken" >
+        insert into token
+            (user_id, refresh_token)
+        values (#{id}, #{refreshToken})
+    </insert>
+
+    <select id="getRefreshToken" resultMap="tokenResultMap">
+        select refresh_token from token
+        where user_id = #{id} and is_deleted = false
+    </select>
+
+    <update id="deleteRefreshToken">
+        update token set
+                                is_deleted = #{isDeleted}
+        where user_id = #{id}
+    </update>
+
+</mapper>

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.Permission;
 import org.example.domain.Team;
 import org.example.dto.team.RequestTeam;
 import org.example.service.TeamService;
@@ -21,6 +22,7 @@ public class TeamController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PostMapping
     public Team createTeam(@RequestBody Team team) {
 
@@ -35,6 +37,7 @@ public class TeamController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}")
     public List<Team> deleteTeam(@PathVariable Long id) {
 
@@ -42,6 +45,7 @@ public class TeamController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
     public Team changeTeamName(@PathVariable Long id, @RequestBody RequestTeam requestTeam) {
 

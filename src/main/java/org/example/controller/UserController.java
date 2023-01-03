@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.Permission;
 import org.example.domain.User;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
@@ -23,6 +24,11 @@ public class UserController {
 
     }
 
+    @PostMapping("/admin")
+    public void createAdmin(@RequestBody User user) {
+        userService.createAdmin(user);
+    }
+
     @PostMapping
     public void createUser(@RequestBody User user){
 
@@ -37,6 +43,7 @@ public class UserController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id){
 
@@ -51,6 +58,7 @@ public class UserController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
     public User getInformation(@PathVariable("id") Long id){
 
@@ -58,6 +66,7 @@ public class UserController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody RequestUser requestUser){
 
@@ -65,6 +74,7 @@ public class UserController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/{id}/team")
     public User joinTeam(@PathVariable("id") Long id, @RequestBody String teamName){
 
@@ -72,6 +82,7 @@ public class UserController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}/team")
     public User leaveTeam(@PathVariable("id") Long id, @RequestBody String teamName) {
 

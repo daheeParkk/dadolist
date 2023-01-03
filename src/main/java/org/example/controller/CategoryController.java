@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.Permission;
 import org.example.domain.Category;
 import org.example.dto.category.RequestCategory;
 import org.example.service.CategoryService;
@@ -21,6 +22,7 @@ public class CategoryController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.ADMIN)
     @PostMapping
     public Category createCategory(@RequestBody Category category){
 
@@ -28,6 +30,7 @@ public class CategoryController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.ADMIN)
     @GetMapping
     public List<Category> getCategory(){
 
@@ -35,6 +38,7 @@ public class CategoryController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.ADMIN)
     @PutMapping("/{id}")
     public Category updateCategory(@PathVariable("id") Long id, @RequestBody RequestCategory requestCategory){
 
@@ -42,6 +46,7 @@ public class CategoryController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.ADMIN)
     @DeleteMapping("/{id}")
     public List<Category> deleteCategory(@PathVariable("id") Long id){
 

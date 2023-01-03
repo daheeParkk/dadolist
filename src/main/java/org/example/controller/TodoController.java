@@ -1,7 +1,7 @@
 package org.example.controller;
 
+import org.example.annotation.Permission;
 import org.example.domain.Todo;
-import org.example.dto.todo.GetTodoList;
 import org.example.dto.todo.RequestTodo;
 import org.example.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/user/{id}")
     public Todo userWriteTodo(@PathVariable("id") Long userId, @RequestBody Todo todo) {
 
@@ -29,6 +30,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
     public Todo updateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo) {
 
@@ -36,6 +38,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/user/{id}/{todoId}")
     public List<Todo> userDeleteTodo(@PathVariable("id") Long userId, @PathVariable Long todoId) {
 
@@ -43,6 +46,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/team/{id}")
     public Todo teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
 
@@ -50,6 +54,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/team/{id}/{todoId}")
     public List<Todo> teamDeleteTodo(@PathVariable("id") Long teamId, @PathVariable Long todoId){
 
@@ -57,6 +62,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
     public List<Todo> getTodoList(@PathVariable("id") Long userId){
 
@@ -64,6 +70,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/team")
     public List<Todo> getTeamTodoListByTeamName(@RequestParam(value = "teamName") String teamName){
 
@@ -71,6 +78,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/month/{id}")
     public List<Todo> getTodoListByMonth(@PathVariable("id") Long userId, @RequestParam(value = "month") String month){
 
@@ -78,6 +86,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/day/{id}")
     public List<Todo> getTodoListByDays(@PathVariable("id") Long userId, @RequestParam(value = "month") String month,
                                          @RequestParam(value = "days") String days){
@@ -86,6 +95,7 @@ public class TodoController {
 
     }
 
+    @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/category/{id}")
     public List<Todo> getTodoListByCategory(@PathVariable("id") Long userId, @RequestParam(value = "category") String category){
 

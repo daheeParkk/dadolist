@@ -2,16 +2,19 @@ package org.example.service;
 
 import org.example.domain.Team;
 import org.example.domain.User;
+import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
 import org.example.repository.TeamMapper;
 import org.example.repository.TeamUserMapper;
+import org.example.repository.TokenMapper;
 import org.example.repository.UserMapper;
 import org.example.util.BcryptUtil;
 import org.example.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +32,37 @@ public class UserServiceImpl implements UserService{
 
     private final TeamUserMapper teamUserMapper;
 
+    private final TokenMapper tokenMapper;
+
+    private final HttpServletResponse httpServletResponse;
+
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, BcryptUtil bcryptUtil, JWTUtil jwtUtil, TeamMapper teamMapper, TeamUserMapper teamUserMapper){
+    public UserServiceImpl(UserMapper userMapper, BcryptUtil bcryptUtil, JWTUtil jwtUtil, TeamMapper teamMapper, TeamUserMapper teamUserMapper,
+                           TokenMapper tokenMapper, HttpServletResponse httpServletResponse){
 
         this.userMapper = userMapper;
         this.bcryptUtil = bcryptUtil;
         this.jwtUtil = jwtUtil;
         this.teamMapper = teamMapper;
         this.teamUserMapper = teamUserMapper;
+        this.tokenMapper = tokenMapper;
+        this.httpServletResponse = httpServletResponse;
+
+    }
+
+    @Override
+    public void createAdmin(User user) {
+
+        if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
+
+        } else if (userMapper.selectNicknameByNickname(user.getNickname()) == 1) {
+
+        } else {
+            String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
+            user.setPassword(encryptedPassword);
+            userMapper.createUser(user);
+            userMapper.createAdmin(user.getId(), true);
+        }
 
     }
 
@@ -66,14 +92,17 @@ public class UserServiceImpl implements UserService{
             return response;
         }
 
-        if(!bcryptUtil.isEquals(info.getPassword(), bcryptUtil.encrypt(requestLogin.getPassword()))) {
+        if(bcryptUtil.isEquals(info.getPassword(), bcryptUtil.encrypt(requestLogin.getPassword()))) {
             response.put("result", "password not match");
             return response;
         }
 
-        String token = jwtUtil.crateToken(info.getId());
-        response.put("token", token);
+        JwtToken token = jwtUtil.crateToken(info.getId(), info, true, true);
+        tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
+        httpServletResponse.setHeader("Authorization",token.getAccessToken());
+
+        response.put("token", token.getAccessToken());
         return response;
 
     }

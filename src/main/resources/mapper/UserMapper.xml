@@ -11,6 +11,12 @@
         <result column="is_deleted" property="isDeleted" />
     </resultMap>
 
+    <update id="createAdmin">
+        update user set
+                        authority = #{checkAdmin}
+        where id = #{id}
+    </update>
+
     <insert id="createUser" parameterType="org.example.domain.User">
         insert into user
             (name, nickname, user_id, password, email)
@@ -40,7 +46,7 @@
 
     <update id="softDelete">
         update user set
-                        is_deleted = #{isDelete}
+                        is_deleted = #{isDeleted}
         where id = #{id}
     </update>
 
