@@ -77,15 +77,6 @@ public class JWTUtil {
 
     }
 
-    // 토큰에 담긴 정보 가져오기
-    public Claims getClaims(String token) throws Exception{
-
-            Claims claims = Jwts.parser()
-                    .setSigningKey(key.getBytes())
-                    .parseClaimsJws(token).getBody();
-        return claims;
-    }
-
     // 토큰 유효성 검증
     public boolean isTokenExpired(String token){
         try{
@@ -102,25 +93,18 @@ public class JWTUtil {
     public UserAndToken validate(String accessToken){
 
         Claims body = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(accessToken).getBody();
-        System.out.println(body);
         UserAndToken userAndToken = new UserAndToken();
         Long userId;
         try {
             userId = Long.parseLong(body.getSubject());
-            System.out.println(userId);
             User user = userMapper.selectUser(userId);
-            System.out.println(user);
             userAndToken.setUser(user);
-            System.out.println(userAndToken.getUser());
-            System.out.println(userAndToken.getAccessToken());
 
         } catch (NumberFormatException e){
             userAndToken.setAccessToken(null);
-            System.out.println("NumberFormatException");
 
         } catch (Exception e){
             userAndToken.setAccessToken(null);
-            System.out.println("Exception");
 
         }
 
@@ -138,7 +122,6 @@ public class JWTUtil {
 
         }
         userAndToken.setAccessToken(accessToken);
-        System.out.println(userAndToken.getAccessToken());
         return userAndToken;
     }
 
