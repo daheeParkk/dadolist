@@ -4,6 +4,7 @@ import org.example.domain.User;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     void createUser(User user);
 
-    Map<String, String> login(RequestLogin requestLogin);
+    Map<String, String> login(RequestLogin requestLogin, HttpServletResponse httpServletResponse);
 
     void deleteUser(Long id);
 

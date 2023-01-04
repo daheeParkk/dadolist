@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Map<String, String> login(RequestLogin requestLogin) {
+    public Map<String, String> login(RequestLogin requestLogin, HttpServletResponse httpServletResponse) {
 
         Map<String, String> response = new HashMap<>();
         User info = userMapper.selectUserByUserId(requestLogin.getUserId());

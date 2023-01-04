@@ -9,6 +9,7 @@ import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +19,13 @@ public class UserController {
 
     private final UserService userService;
 
+    private final HttpServletResponse httpServletResponse;
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, HttpServletResponse httpServletResponse){
 
         this.userService = userService;
+        this.httpServletResponse = httpServletResponse;
 
     }
 
@@ -42,7 +46,7 @@ public class UserController {
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody RequestLogin requestLogin){
 
-        return userService.login(requestLogin);
+        return userService.login(requestLogin, httpServletResponse);
 
     }
 
