@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService{
             return response;
         }
 
-        JwtToken token = jwtUtil.crateToken(info.getId(), info, true, true);
+        JwtToken token = jwtUtil.crateToken(info.getId(), true, true);
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
         httpServletResponse.setHeader("Authorization",token.getAccessToken());

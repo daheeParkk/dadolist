@@ -30,14 +30,14 @@ public class JWTUtil {
     @Value("${jwt.secret_key}")
     private String key;
 
-    public JwtToken crateToken(Long id, User user, Boolean createAccess, Boolean createRefresh) {
+    public JwtToken crateToken(Long id, Boolean createAccess, Boolean createRefresh) {
 
         Map<String, Object> headers = new HashMap<>();
         headers.put("typ", "JWT");
         headers.put("alg", "HS256");
 
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put(user.getName(), id);
+        payloads.put("sub", id);
 
         JwtToken jwtToken = new JwtToken();
 
@@ -102,18 +102,25 @@ public class JWTUtil {
     public UserAndToken validate(String accessToken){
 
         Claims body = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(accessToken).getBody();
+        System.out.println(body);
         UserAndToken userAndToken = new UserAndToken();
         Long userId;
         try {
-            userId = Long.parseLong(body.getId());
+            userId = Long.parseLong(body.getSubject());
+            System.out.println(userId);
             User user = userMapper.selectUser(userId);
+            System.out.println(user);
             userAndToken.setUser(user);
+            System.out.println(userAndToken.getUser());
+            System.out.println(userAndToken.getAccessToken());
 
         } catch (NumberFormatException e){
             userAndToken.setAccessToken(null);
+            System.out.println("NumberFormatException");
 
         } catch (Exception e){
             userAndToken.setAccessToken(null);
+            System.out.println("Exception");
 
         }
 
@@ -123,7 +130,7 @@ public class JWTUtil {
                 tokenMapper.deleteRefreshToken(true, userAndToken.getUser().getId());
                 userAndToken.setAccessToken(null);
             } else {                                                       // refreshToken은 만료 X -> accessToken 재발급
-                JwtToken jwtToken = crateToken(userAndToken.getUser().getId(), userAndToken.getUser(), true, false);
+                JwtToken jwtToken = crateToken(userAndToken.getUser().getId(), true, false);
                 String reissueAccessToke = jwtToken.getAccessToken();
                 userAndToken.setAccessToken(reissueAccessToke);
             }
@@ -131,6 +138,7 @@ public class JWTUtil {
 
         }
         userAndToken.setAccessToken(accessToken);
+        System.out.println(userAndToken.getAccessToken());
         return userAndToken;
     }
 

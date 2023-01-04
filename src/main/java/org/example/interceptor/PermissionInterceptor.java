@@ -37,18 +37,31 @@ public class PermissionInterceptor implements HandlerInterceptor {
         String accessToken;
         UserAndToken userAndToken;
 
-            accessToken = request.getHeader("Authorization");
-            userAndToken = jwtUtil.validate(accessToken);
+        accessToken = (request.getHeader("Authorization")).substring(7);
+        System.out.println(accessToken);
+        userAndToken = jwtUtil.validate(accessToken);
+        System.out.println(userAndToken.getAccessToken());
+        System.out.println("gogo");
+
+        if (userAndToken.getUser().getAuthority() == null) {
+            System.out.println("getAuthority == null");
+            return false;
+        }
 
         if (permission.role().equals(Permission.PermissionRole.ADMIN)) {    // 관리자 API
             if (userAndToken.getUser().getAuthority() == null) {        // 권한이 없을 경우
+
+                System.out.println("권한이 아예 없움");
                 return false;
             } else if (userAndToken.getUser().getAuthority() == 0) {    // 권한이 0 (유저)일 경우
+
+                System.out.println("권한이 유저임");
                 return false;
             }
         }
 
         if(permission.role().equals(Permission.PermissionRole.USER)) {      // 유저 API
+            System.out.println("userAPI start");
             if (userAndToken.getUser().getAuthority() == null) {
                 return false;
             }
