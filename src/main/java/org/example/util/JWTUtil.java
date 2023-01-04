@@ -101,26 +101,36 @@ public class JWTUtil {
 
     public UserAndToken validate(String accessToken){
 
-        Claims body = Jwts.parser().setSigningKey(this.key).parseClaimsJws(accessToken).getBody();
-        Long userId = Long.parseLong(body.getSubject());
-        User user = userMapper.selectUser(userId);
+        Claims body = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(accessToken).getBody();
         UserAndToken userAndToken = new UserAndToken();
-        userAndToken.setUser(user);
+        Long userId;
+        try {
+            userId = Long.parseLong(body.getId());
+            User user = userMapper.selectUser(userId);
+            userAndToken.setUser(user);
+
+        } catch (NumberFormatException e){
+            userAndToken.setAccessToken(null);
+
+        } catch (Exception e){
+            userAndToken.setAccessToken(null);
+
+        }
 
         if (!isTokenExpired(accessToken)) {                                // accessToken이 만료되었을 때
-            String refreshToken = tokenMapper.getRefreshToken(userId);
+            String refreshToken = tokenMapper.getRefreshToken(userAndToken.getUser().getId());
             if (!isTokenExpired(refreshToken)){                            // refreshToken도 만료 -> DB에서 삭제
-                tokenMapper.deleteRefreshToken(true, userId);
-                userAndToken.setAccessToke(null);
+                tokenMapper.deleteRefreshToken(true, userAndToken.getUser().getId());
+                userAndToken.setAccessToken(null);
             } else {                                                       // refreshToken은 만료 X -> accessToken 재발급
-                JwtToken jwtToken = crateToken(userId, user, true, false);
+                JwtToken jwtToken = crateToken(userAndToken.getUser().getId(), userAndToken.getUser(), true, false);
                 String reissueAccessToke = jwtToken.getAccessToken();
-                userAndToken.setAccessToke(reissueAccessToke);
+                userAndToken.setAccessToken(reissueAccessToke);
             }
             return userAndToken;
 
         }
-        userAndToken.setAccessToke(accessToken);
+        userAndToken.setAccessToken(accessToken);
         return userAndToken;
     }
 

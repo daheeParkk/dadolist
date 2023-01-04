@@ -1,7 +1,10 @@
 package org.example.domain;
 
+import lombok.Data;
+
 import java.sql.Timestamp;
 
+@Data
 public class BaseEntity {
 
     private Timestamp createdAt;
@@ -9,42 +12,6 @@ public class BaseEntity {
     private Timestamp updatedAt;
 
     private Boolean isDeleted = false;
-
-    public Timestamp getCreatedAt() {
-
-        return createdAt;
-
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-
-        this.createdAt = createdAt;
-
-    }
-
-    public Timestamp getUpdatedAt() {
-
-        return updatedAt;
-
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-
-        this.updatedAt = updatedAt;
-
-    }
-
-    public Boolean getIsDeleted() {
-
-        return isDeleted;
-
-    }
-
-    public void setIsDeleted(Boolean deleted) {
-
-        isDeleted = deleted;
-
-    }
 
 }
 

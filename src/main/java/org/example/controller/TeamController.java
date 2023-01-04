@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.Team;
 import org.example.dto.team.RequestTeam;
@@ -30,6 +31,7 @@ public class TeamController {
 
     }
 
+    @NoAuth
     @GetMapping
     public List<Team> getTeamList() {
 

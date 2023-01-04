@@ -20,8 +20,8 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**/"/>
-            <bean id="Interceptor" class="org.example.interceptor.PermissionInterceptor" />
+            <mvc:mapping path="/**"/>
+            <bean class="org.example.interceptor.PermissionInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 

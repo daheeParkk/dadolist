@@ -6,7 +6,7 @@ public class UserAndToken {
 
     private User user;
 
-    private String accessToke;
+    private String accessToken;
 
     public User getUser() {
         return user;
@@ -16,11 +16,11 @@ public class UserAndToken {
         this.user = user;
     }
 
-    public String getAccessToke() {
-        return accessToke;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setAccessToke(String accessToke) {
-        this.accessToke = accessToke;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

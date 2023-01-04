@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.Category;
 import org.example.dto.category.RequestCategory;
@@ -30,7 +31,7 @@ public class CategoryController {
 
     }
 
-    @Permission(role = Permission.PermissionRole.ADMIN)
+    @NoAuth
     @GetMapping
     public List<Category> getCategory(){
 

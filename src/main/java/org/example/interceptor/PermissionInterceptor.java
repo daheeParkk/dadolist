@@ -1,12 +1,10 @@
 package org.example.interceptor;
 
-import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
+import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
-import org.example.domain.User;
 import org.example.dto.user.UserAndToken;
-import org.example.service.UserService;
 import org.example.util.JWTUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,14 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@RequiredArgsConstructor
 public class PermissionInterceptor implements HandlerInterceptor {
 
     private final JWTUtil jwtUtil;
-
-    @Autowired
-    public PermissionInterceptor(JWTUtil jwtUtil){
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -32,21 +26,19 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Permission permission = handlerMethod.getMethodAnnotation(Permission.class);
-        if(permission == null) {
+        NoAuth noAuth = handlerMethod.getMethodAnnotation(NoAuth.class);
+        if(noAuth != null) {
             return true;
         }
 
-        if (request.getHeader("Authorization") == null || !(request.getHeader("Authorization")).startsWith("Bearer "))
+        if (request.getHeader("Authorization") == null)
             return false;
 
-        String accessToken = (request.getHeader("Authorization")).substring(7);
-        UserAndToken userAndToken = jwtUtil.validate(accessToken);
+        String accessToken;
+        UserAndToken userAndToken;
 
-        if (userAndToken.getAccessToke() == null) {
-            return false;
-        }
-
-        response.setHeader("Authorization", userAndToken.getAccessToke());
+            accessToken = request.getHeader("Authorization");
+            userAndToken = jwtUtil.validate(accessToken);
 
         if (permission.role().equals(Permission.PermissionRole.ADMIN)) {    // 관리자 API
             if (userAndToken.getUser().getAuthority() == null) {        // 권한이 없을 경우

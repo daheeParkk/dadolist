@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.User;
 import org.example.dto.user.RequestLogin;
@@ -29,6 +30,7 @@ public class UserController {
         userService.createAdmin(user);
     }
 
+    @NoAuth
     @PostMapping
     public void createUser(@RequestBody User user){
 
@@ -36,6 +38,7 @@ public class UserController {
 
     }
 
+    @NoAuth
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody RequestLogin requestLogin){
 
@@ -51,6 +54,7 @@ public class UserController {
 
     }
 
+    @NoAuth
     @GetMapping
     public List<User> getUser(){
 

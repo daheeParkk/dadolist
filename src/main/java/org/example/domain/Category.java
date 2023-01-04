@@ -1,35 +1,13 @@
 package org.example.domain;
 
+import lombok.Data;
 import org.example.dto.category.RequestCategory;
 
+@Data
 public class Category extends BaseEntity {
 
     private Long id;
     private String content;
-
-    public Long getId() {
-
-        return id;
-
-    }
-
-    public void setId(Long id) {
-
-        this.id = id;
-
-    }
-
-    public String getContent() {
-
-        return content;
-
-    }
-
-    public void setContent(String content) {
-
-        this.content = content;
-
-    }
 
     public void update(RequestCategory requestCategory) {
 
