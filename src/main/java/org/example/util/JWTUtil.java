@@ -1,6 +1,7 @@
 package org.example.util;
 
 import io.jsonwebtoken.*;
+import org.apache.ibatis.ognl.Token;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.dto.token.TokenUserId;
@@ -23,8 +24,6 @@ public class JWTUtil {
     private final UserMapper userMapper;
 
     private final TokenMapper tokenMapper;
-
-    public TokenUserId tokenUserId;
 
     @Autowired
     public JWTUtil(UserMapper userMapper, TokenMapper tokenMapper) {
@@ -84,7 +83,7 @@ public class JWTUtil {
 
     // 토큰 유효성 검증
     public TokenUserId isTokenExpired(String token, HttpServletRequest request) {
-
+        TokenUserId tokenUserId = new TokenUserId();
         try{
             System.out.println("in isTokenExpired");
             Claims claims = Jwts.parser()
@@ -128,9 +127,13 @@ public class JWTUtil {
             JwtToken jwtToken = crateToken(tokenUserId.getUserId(), true, false);
             String reissueAccessToke = jwtToken.getAccessToken();
             userAndToken.setAccessToken(reissueAccessToke);
+
+        } else {
+            userAndToken.setAccessToken(accessToken);
         }
 
-        userAndToken.setAccessToken(accessToken);
+        User user = userMapper.selectUser(tokenUserId.getUserId());
+        userAndToken.setUser(user);
         return userAndToken;
 
     }

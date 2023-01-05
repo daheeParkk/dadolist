@@ -48,7 +48,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             if (userAndToken.getUser().getAuthority() == null) {        // 권한이 없을 경우
                 return false;
             } else if (userAndToken.getUser().getAuthority() == 0) {    // 권한이 0 (유저)일 경우
-                return false;
+                return false; // throw unAuthorize Exception
             }
         }
 
