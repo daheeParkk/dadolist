@@ -89,7 +89,7 @@ public class JWTUtil {
             System.out.println("in isTokenExpired");
             Claims claims = Jwts.parser()
                     .setSigningKey(key.getBytes()).parseClaimsJws(token).getBody();
-            tokenUserId.setUserId(7L);
+
             tokenUserId.setUserId(Long.parseLong(claims.getSubject()));
             tokenUserId.setIsAccessToken(true);
             return tokenUserId;

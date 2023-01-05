@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Permission {
 
-    public enum PermissionRole {ADMIN, USER, NONE}
+    public enum PermissionRole {ADMIN, USER}
 
     PermissionRole role() default PermissionRole.USER;
 }
