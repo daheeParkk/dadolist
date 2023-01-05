@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.domain.Category;
 import org.example.dto.category.RequestCategory;
+import org.example.exception.NotFoundException;
 import org.example.repository.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class CategoryServiceImpl implements CategoryService{
     public Category updateCategory(Long id, RequestCategory requestCategory) {
 
         Category category = categoryMapper.selectCategory(id);
+        if (category == null) {
+            throw new NotFoundException("Category Not Found");
+        }
         category.update(requestCategory);
         categoryMapper.updateCategory(category);
         return categoryMapper.selectCategory(id);

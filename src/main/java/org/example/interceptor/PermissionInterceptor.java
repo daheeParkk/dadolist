@@ -38,7 +38,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         UserAndToken userAndToken;
 
         accessToken = (request.getHeader("Authorization")).substring(7);
-        userAndToken = jwtUtil.validate(accessToken);
+        userAndToken = jwtUtil.validate(accessToken, request);
 
         if (userAndToken.getUser().getAuthority() == null) {
             return false;

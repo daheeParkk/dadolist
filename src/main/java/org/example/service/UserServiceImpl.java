@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService{
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
         httpServletResponse.setHeader("Authorization",token.getAccessToken());
+        httpServletResponse.setHeader("RefreshToken", token.getRefreshToken());
 
         response.put("token", token.getAccessToken());
         return response;
