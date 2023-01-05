@@ -1,9 +1,5 @@
 package org.example;
 
-import org.example.domain.Category;
-import org.example.domain.User;
-import org.example.dto.token.TokenUserId;
-
 /**
  * Hello world!
  *

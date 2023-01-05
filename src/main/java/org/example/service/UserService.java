@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.domain.User;
+import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     void createUser(User user);
 
-    Map<String, String> login(RequestLogin requestLogin, HttpServletResponse httpServletResponse);
+    JwtToken login(RequestLogin requestLogin);
 
     void deleteUser(Long id);
 

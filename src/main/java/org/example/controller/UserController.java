@@ -3,10 +3,13 @@ package org.example.controller;
 import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.User;
+import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,13 +22,10 @@ public class UserController {
 
     private final UserService userService;
 
-    private final HttpServletResponse httpServletResponse;
-
     @Autowired
-    public UserController(UserService userService, HttpServletResponse httpServletResponse){
+    public UserController(UserService userService){
 
         this.userService = userService;
-        this.httpServletResponse = httpServletResponse;
 
     }
 
@@ -44,9 +44,10 @@ public class UserController {
 
     @NoAuth
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody RequestLogin requestLogin){
+    public JwtToken login(@RequestBody RequestLogin requestLogin){
 
-        return userService.login(requestLogin, httpServletResponse);
+        JwtToken jwtToken = userService.login(requestLogin);
+        return jwtToken;
 
     }
 

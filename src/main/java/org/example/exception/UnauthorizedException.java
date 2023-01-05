@@ -10,6 +10,6 @@ public class UnauthorizedException extends RuntimeException{
 
     @Override
     public String toString() {
-        return "UnauthorizedException" + "[" + errMessage + "]";
+        return "{ UnauthorizedException } " + "----" + errMessage + "----";
     }
 }

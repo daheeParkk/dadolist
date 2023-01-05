@@ -1,19 +1,14 @@
 package org.example.util;
 
 import io.jsonwebtoken.*;
-import org.apache.ibatis.ognl.Token;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
-import org.example.dto.token.TokenUserId;
-import org.example.dto.user.UserAndToken;
 import org.example.exception.UnauthorizedException;
-import org.example.repository.TokenMapper;
 import org.example.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +18,9 @@ public class JWTUtil {
 
     private final UserMapper userMapper;
 
-    private final TokenMapper tokenMapper;
-
     @Autowired
-    public JWTUtil(UserMapper userMapper, TokenMapper tokenMapper) {
+    public JWTUtil(UserMapper userMapper) {
         this.userMapper = userMapper;
-        this.tokenMapper = tokenMapper;
     }
 
     @Value("${jwt.secret_key}")
@@ -82,59 +74,30 @@ public class JWTUtil {
     }
 
     // 토큰 유효성 검증
-    public TokenUserId isTokenExpired(String token, HttpServletRequest request) {
-        TokenUserId tokenUserId = new TokenUserId();
+    public Long isTokenExpired(String token) {
+
         try{
-            System.out.println("in isTokenExpired");
+
             Claims claims = Jwts.parser()
                     .setSigningKey(key.getBytes()).parseClaimsJws(token).getBody();
 
-            tokenUserId.setUserId(Long.parseLong(claims.getSubject()));
-            tokenUserId.setIsAccessToken(true);
-            return tokenUserId;
+            Long userId = Long.parseLong(claims.getSubject());
+            return userId;
+
         } catch (ExpiredJwtException e) {  // Token이 만료된 경우
-
-            try {
-
-                String refreshToken = (request.getHeader("RefreshToken")).substring(7);
-
-                Claims claims = Jwts.parser()
-                        .setSigningKey(key.getBytes()).parseClaimsJws(refreshToken).getBody();
-
-                tokenUserId.setUserId(Long.parseLong(claims.getSubject()));
-                tokenUserId.setIsAccessToken(false);
-                return tokenUserId;
-
-            } catch (ExpiredJwtException expiredJwtException) {
-
-                throw new UnauthorizedException("expired refresh token");
-            }
+            throw new UnauthorizedException("expired token");
 
         } catch (JwtException e) {  // Token이 변조된 경우
             throw new UnauthorizedException("Unauthorized");
         }
     }
 
-    public UserAndToken validate(String accessToken, HttpServletRequest request){
+    public User validate(String accessToken){
 
-        System.out.println("in");
-        UserAndToken userAndToken = new UserAndToken();
+        Long userId = isTokenExpired(accessToken);
+        User user = userMapper.selectUser(userId);
 
-        TokenUserId tokenUserId = isTokenExpired(accessToken, request);
-
-        if (!tokenUserId.getIsAccessToken()) { // accessToken 만료 -> 재발급
-
-            JwtToken jwtToken = crateToken(tokenUserId.getUserId(), true, false);
-            String reissueAccessToke = jwtToken.getAccessToken();
-            userAndToken.setAccessToken(reissueAccessToke);
-
-        } else {
-            userAndToken.setAccessToken(accessToken);
-        }
-
-        User user = userMapper.selectUser(tokenUserId.getUserId());
-        userAndToken.setUser(user);
-        return userAndToken;
+        return user;
 
     }
 

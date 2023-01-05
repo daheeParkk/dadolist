@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.exception.NotFoundException;
+import org.example.exception.CategoryNotFoundException;
 import org.example.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = NotFoundException.class)
-    public ResponseEntity notFoundException(NotFoundException e){
+    @ExceptionHandler(value = CategoryNotFoundException.class)
+    public ResponseEntity CategoryNotFoundException(CategoryNotFoundException e){
 
         return new ResponseEntity<String>(e.toString(), HttpStatus.BAD_REQUEST);
     }

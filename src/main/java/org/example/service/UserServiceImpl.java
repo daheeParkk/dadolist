@@ -14,10 +14,9 @@ import org.example.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -34,11 +33,9 @@ public class UserServiceImpl implements UserService{
 
     private final TokenMapper tokenMapper;
 
-    private final HttpServletResponse httpServletResponse;
-
     @Autowired
     public UserServiceImpl(UserMapper userMapper, BcryptUtil bcryptUtil, JWTUtil jwtUtil, TeamMapper teamMapper, TeamUserMapper teamUserMapper,
-                           TokenMapper tokenMapper, HttpServletResponse httpServletResponse){
+                           TokenMapper tokenMapper){
 
         this.userMapper = userMapper;
         this.bcryptUtil = bcryptUtil;
@@ -46,7 +43,6 @@ public class UserServiceImpl implements UserService{
         this.teamMapper = teamMapper;
         this.teamUserMapper = teamUserMapper;
         this.tokenMapper = tokenMapper;
-        this.httpServletResponse = httpServletResponse;
 
     }
 
@@ -82,29 +78,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Map<String, String> login(RequestLogin requestLogin, HttpServletResponse httpServletResponse) {
+    public JwtToken login(RequestLogin requestLogin) {
 
-        Map<String, String> response = new HashMap<>();
         User info = userMapper.selectUserByUserId(requestLogin.getUserId());
 
         if(info == null){
-            response.put("result", "userId not exist!!");
-            return response;
+
         }
 
         if(bcryptUtil.isEquals(info.getPassword(), bcryptUtil.encrypt(requestLogin.getPassword()))) {
-            response.put("result", "password not match");
-            return response;
+
         }
 
         JwtToken token = jwtUtil.crateToken(info.getId(), true, true);
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
-        httpServletResponse.setHeader("Authorization",token.getAccessToken());
-        httpServletResponse.setHeader("RefreshToken", token.getRefreshToken());
-
-        response.put("token", token.getAccessToken());
-        return response;
+        return token;
 
     }
 
