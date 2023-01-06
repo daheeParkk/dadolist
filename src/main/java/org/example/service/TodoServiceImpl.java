@@ -7,6 +7,7 @@ import org.example.repository.TodoMapper;
 import org.example.repository.TodoUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class TodoServiceImpl implements TodoService {
 
     }
 
+    @Transactional
     @Override
     public Todo userWriteTodo(Long userId, Todo todo) {
 
@@ -49,6 +51,7 @@ public class TodoServiceImpl implements TodoService {
 
     }
 
+    @Transactional
     @Override
     public List<Todo> userDeleteTodo(Long userId, Long todoId) {
 

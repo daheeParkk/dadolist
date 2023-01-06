@@ -7,6 +7,7 @@ import org.example.repository.TeamMapper;
 import org.example.repository.TeamUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class TeamServiceImpl implements TeamService {
 
     }
 
+    @Transactional
     @Override
     public List<Team> deleteTeam(Long id) {
 
