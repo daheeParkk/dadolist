@@ -5,6 +5,8 @@ import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
 import org.example.dto.user.RequestUser;
+import org.example.exception.DoesNotExistException;
+import org.example.exception.DuplicateException;
 import org.example.repository.TeamMapper;
 import org.example.repository.TeamUserMapper;
 import org.example.repository.TokenMapper;
@@ -50,9 +52,9 @@ public class UserServiceImpl implements UserService{
     public void createAdmin(User user) {
 
         if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
-
-        } else if (userMapper.selectNicknameByNickname(user.getNickname()) == 1) {
-
+            throw new DuplicateException("This ID exists.");
+        } else if (userMapper.countNicknameByNickname(user.getNickname()) == 1) {
+            throw new DuplicateException("This Nickname exists.");
         } else {
             String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
             user.setPassword(encryptedPassword);
@@ -66,9 +68,9 @@ public class UserServiceImpl implements UserService{
     public void createUser(User user) {
 
         if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
-
-        } else if (userMapper.selectNicknameByNickname(user.getNickname()) == 1) {
-
+            throw new DuplicateException("This ID exists.");
+        } else if (userMapper.countNicknameByNickname(user.getNickname()) == 1) {
+            throw new DuplicateException("This Nickname exists.");
         } else {
             String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
             user.setPassword(encryptedPassword);
@@ -83,12 +85,10 @@ public class UserServiceImpl implements UserService{
         User info = userMapper.selectUserByUserId(requestLogin.getUserId());
 
         if(info == null){
-
+            throw new DoesNotExistException("User not found");
         }
 
-        if(bcryptUtil.isEquals(info.getPassword(), bcryptUtil.encrypt(requestLogin.getPassword()))) {
-
-        }
+        bcryptUtil.checkPassword(requestLogin.getPassword(), info.getPassword());
 
         JwtToken token = jwtUtil.crateToken(info.getId(), true, true);
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
@@ -122,6 +122,9 @@ public class UserServiceImpl implements UserService{
     public User updateUser(Long id, RequestUser requestUser) {
 
         User user = userMapper.selectUser(id);
+        if (user == null) {
+            throw new DoesNotExistException("User not found");
+        }
         user.update(requestUser);
         userMapper.updateUser(user);
         return userMapper.selectUser(id);
@@ -133,7 +136,7 @@ public class UserServiceImpl implements UserService{
 
         Team info = teamMapper.selectTeamByTeamName(team);
         if (info == null){
-            return userMapper.selectUser(id);
+            throw new DoesNotExistException("Team not found");
         }
         Long teamId = info.getId();
         teamUserMapper.joinTeam(id, teamId);
@@ -146,7 +149,7 @@ public class UserServiceImpl implements UserService{
 
         Team info = teamMapper.selectTeamByTeamName(team);
         if (info == null) {
-            return userMapper.selectUser(id);
+            throw new DoesNotExistException("Team not found");
         }
         Long teamId = info.getId();
         teamUserMapper.softDelete(true, teamId);

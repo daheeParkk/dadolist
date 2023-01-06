@@ -15,7 +15,7 @@ public interface UserMapper {
 
     int countUserIdByUserId(String userId);
 
-    int selectNicknameByNickname(String nickname);
+    int countNicknameByNickname(String nickname);
 
     User selectUserByUserId(String userId);
 

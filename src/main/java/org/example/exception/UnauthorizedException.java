@@ -2,7 +2,7 @@ package org.example.exception;
 
 public class UnauthorizedException extends RuntimeException{
 
-    private String errMessage;
+    private final String errMessage;
 
     public UnauthorizedException(String errMessage){
         this.errMessage = errMessage;
@@ -10,6 +10,6 @@ public class UnauthorizedException extends RuntimeException{
 
     @Override
     public String toString() {
-        return "{ UnauthorizedException } " + "----" + errMessage + "----";
+        return "UnauthorizedException" + "-" + errMessage;
     }
 }

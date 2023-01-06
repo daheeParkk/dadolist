@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface TodoService {
 
-    Todo userWriteTodo(Long userId, Todo todo);
+    void userWriteTodo(Long userId, Todo todo);
 
     Todo updateTodo(Long id, RequestTodo requestTodo);
 
     List<Todo> userDeleteTodo(Long userId, Long todoId);
 
-    Todo teamWriteTodo(Long teamId, Todo todo);
+    void teamWriteTodo(Long teamId, Todo todo);
 
     List<Todo> teamDeleteTodo(Long teamId, Long todoId);
 

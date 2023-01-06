@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.domain.Team;
 import org.example.dto.team.RequestTeam;
+import org.example.exception.DoesNotExistException;
 import org.example.repository.TeamMapper;
 import org.example.repository.TeamUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ public class TeamServiceImpl implements TeamService {
     public Team changeTeamName(Long id, RequestTeam requestTeam) {
 
         Team team = teamMapper.getTeam(id);
+        if (team == null) {
+            throw new DoesNotExistException("Team Not Found");
+        }
         team.update(requestTeam);
         teamMapper.updateTeam(team);
         return teamMapper.getTeam(id);

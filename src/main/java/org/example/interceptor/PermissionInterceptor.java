@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.User;
+import org.example.exception.UnauthorizedException;
+import org.example.exception.UnprivilegedAPIException;
 import org.example.util.JWTUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -25,35 +27,36 @@ public class PermissionInterceptor implements HandlerInterceptor {
         }
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
+
         Permission permission = handlerMethod.getMethodAnnotation(Permission.class);
+
         NoAuth noAuth = handlerMethod.getMethodAnnotation(NoAuth.class);
+
         if(noAuth != null) {
             return true;
         }
 
         if (request.getHeader("Authorization") == null)
-            return false;
+            throw new UnauthorizedException("Token does not exist");
 
-        String accessToken;
-
-        accessToken = (request.getHeader("Authorization")).substring(7);
+        String accessToken = (request.getHeader("Authorization")).substring(7);
         User user = jwtUtil.validate(accessToken);
 
         if (user.getAuthority() == null) {
-            return false;
+            throw new UnauthorizedException("Unable to find user by token");
         }
 
         if (permission.role().equals(Permission.PermissionRole.ADMIN)) {    // 관리자 API
             if (user.getAuthority() == null) {        // 권한이 없을 경우
-                return false;
+                throw new UnprivilegedAPIException("not authorized");
             } else if (user.getAuthority() == 0) {    // 권한이 0 (유저)일 경우
-                return false; // throw unAuthorize Exception
+                throw new UnprivilegedAPIException("not authorized");
             }
         }
 
         if(permission.role().equals(Permission.PermissionRole.USER)) {      // 유저 API
             if (user.getAuthority() == null) {
-                return false;
+                throw new UnprivilegedAPIException("not authorized");
             }
         }
         return true;

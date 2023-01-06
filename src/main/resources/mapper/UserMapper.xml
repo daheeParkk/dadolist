@@ -32,7 +32,7 @@
         where user_id = #{userId} and is_deleted = false limit 1
     </select>
 
-    <select id="selectNicknameByNickname" resultType="java.lang.Integer">
+    <select id="countNicknameByNickname" resultType="java.lang.Integer">
         select count(nickname)
         from user
         where nickname = #{nickname} and is_deleted = false limit 1

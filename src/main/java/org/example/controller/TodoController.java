@@ -24,9 +24,9 @@ public class TodoController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/user/{id}")
-    public Todo userWriteTodo(@PathVariable("id") Long userId, @RequestBody Todo todo) {
+    public void userWriteTodo(@PathVariable("id") Long userId, @RequestBody Todo todo) {
 
-        return todoService.userWriteTodo(userId, todo);
+        todoService.userWriteTodo(userId, todo);
 
     }
 
@@ -48,9 +48,9 @@ public class TodoController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/team/{id}")
-    public Todo teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
+    public void teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
 
-        return todoService.teamWriteTodo(teamId, todo);
+        todoService.teamWriteTodo(teamId, todo);
 
     }
 

@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.domain.Todo;
 import org.example.dto.todo.RequestTodo;
+import org.example.exception.DoesNotExistException;
 import org.example.repository.TodoMapper;
 import org.example.repository.TodoUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo userWriteTodo(Long userId, Todo todo) {
+    public void userWriteTodo(Long userId, Todo todo) {
 
         todoMapper.writeTodo(todo);
         Long todoId = todo.getId();
         todoUserMapper.createTodoUser(userId, todoId);
-        return todoMapper.getTodo(todoId);
 
     }
 
@@ -39,6 +39,9 @@ public class TodoServiceImpl implements TodoService {
     public Todo updateTodo(Long id, RequestTodo requestTodo) {
 
         Todo todo = todoMapper.getTodo(id);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
         todo.update(requestTodo);
         todoMapper.updateTodo(todo);
         return todoMapper.getTodo(id);
@@ -55,11 +58,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo teamWriteTodo(Long teamId, Todo todo) {
+    public void teamWriteTodo(Long teamId, Todo todo) {
 
         todoMapper.teamWriteTodo(teamId, todo);
-        Long todoId = todo.getId();
-        return todoMapper.getTodo(todoId);
 
     }
 
@@ -73,36 +74,56 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<Todo> getTodoList(Long userId) {
-        List<Todo> todos = todoMapper.getTodoList(userId);
-        return todos;
+
+        List<Todo> todo = todoMapper.getTodoList(userId);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
+        return todo;
 
     }
 
     @Override
     public List<Todo> getTeamTodoListByTeamName(String teamName) {
 
-        return todoMapper.getTeamTodoListByTeamName(teamName);
+        List<Todo> todo = todoMapper.getTeamTodoListByTeamName(teamName);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
+        return todo;
 
     }
 
     @Override
     public List<Todo> getTodoListByMonth(Long userId, String month) {
 
-        return todoMapper.getTodoListByMonth(userId, month);
+        List<Todo> todo = todoMapper.getTodoListByMonth(userId, month);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
+        return todo;
 
     }
 
     @Override
     public List<Todo> getTodoListByDays(Long userId, String month, String days) {
 
-        return todoMapper.getTodoListByDays(userId, month, days);
+        List<Todo> todo = todoMapper.getTodoListByDays(userId, month, days);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
+        return todo;
 
     }
 
     @Override
     public List<Todo> getTodoListByCategory(Long userId, String category) {
 
-        return todoMapper.getTodoListByCategory(userId, category);
+        List<Todo> todo = todoMapper.getTodoListByCategory(userId, category);
+        if (todo == null) {
+            throw new DoesNotExistException("todo not found");
+        }
+        return todo;
 
     }
 

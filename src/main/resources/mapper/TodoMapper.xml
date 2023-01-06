@@ -21,6 +21,9 @@
         insert into todo
             (content, deadline, category_id)
         values (#{content}, #{deadline}, #{categoryId})
+        <selectKey resultType="Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <select id="getTodo" resultMap="todoResultMap">
