@@ -25,14 +25,14 @@ public class JWTController {
 
 
     @Permission(role = Permission.PermissionRole.USER)
-    @GetMapping("/refresh/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<String> refreshTokenReissue(@PathVariable("id") Long id){
 
         return new ResponseEntity<>(jwtService.refreshTokenReissue(id), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
-    @GetMapping("/access")
+    @GetMapping
     public ResponseEntity<String> accessTokenReissue(HttpServletRequest request){
 
         String refreshToken = (request.getHeader("Authorization")).substring(7);

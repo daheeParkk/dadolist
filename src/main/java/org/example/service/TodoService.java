@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Todo;
-import org.example.dto.todo.GetTodoList;
 import org.example.dto.todo.RequestTodo;
 
 import java.util.List;

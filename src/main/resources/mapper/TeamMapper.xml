@@ -5,6 +5,7 @@
 
     <resultMap id="teamResultMap" type="org.example.domain.Team">
         <id column="id" property="id" />
+        <result column="name" property="teamName" />
         <result column="created_at" property="createdAt" />
         <result column="updated_at" property="updatedAt" />
         <result column="is_deleted" property="isDeleted" />
@@ -13,7 +14,7 @@
     <select id="selectTeamByTeamName" resultMap="teamResultMap">
         select *
         from team
-        where name = #{team} and is_deleted = false
+        where name = #{teamName} and is_deleted = false
     </select>
 
     <select id="getTeam" resultMap="teamResultMap">

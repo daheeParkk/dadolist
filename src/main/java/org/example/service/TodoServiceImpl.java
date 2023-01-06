@@ -41,11 +41,12 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo updateTodo(Long id, RequestTodo requestTodo) {
 
-        Todo todo = todoMapper.getTodo(id);
-        if (todo == null) {
-            throw new DoesNotExistException("todo not found");
-        }
-        todo.update(requestTodo);
+        Todo todo = Todo.builder()
+                .id(id)
+                .content(requestTodo.getContent())
+                .deadline(requestTodo.getDeadline())
+                .categoryId(requestTodo.getCategoryId())
+                .build();
         todoMapper.updateTodo(todo);
         return todoMapper.getTodo(id);
 

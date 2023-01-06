@@ -54,11 +54,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team changeTeamName(Long id, RequestTeam requestTeam) {
 
-        Team team = teamMapper.getTeam(id);
-        if (team == null) {
-            throw new DoesNotExistException("Team Not Found");
-        }
-        team.update(requestTeam);
+        Team team = Team.builder()
+                .id(id)
+                .teamName(requestTeam.getName())
+                .build();
         teamMapper.updateTeam(team);
         return teamMapper.getTeam(id);
 

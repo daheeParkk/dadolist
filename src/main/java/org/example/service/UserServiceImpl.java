@@ -125,20 +125,25 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(Long id, RequestUser requestUser) {
 
-        User user = userMapper.selectUser(id);
-        if (user == null) {
-            throw new DoesNotExistException("User not found");
-        }
-        user.update(requestUser);
+        User user = User.builder()
+                .id(id)
+                .name(requestUser.getName())
+                .nickname(requestUser.getNickname())
+                .userId(requestUser.getUserId())
+                .password(requestUser.getPassword())
+                .email(requestUser.getEmail())
+                .build();
+
         userMapper.updateUser(user);
         return userMapper.selectUser(id);
 
     }
 
     @Override
-    public User joinTeam(Long id, String team) {
+    public User joinTeam(Long id, String teamName) {
 
-        Team info = teamMapper.selectTeamByTeamName(team);
+        Team info = teamMapper.selectTeamByTeamName(teamName);
+        System.out.println(info);
         if (info == null){
             throw new DoesNotExistException("Team not found");
         }

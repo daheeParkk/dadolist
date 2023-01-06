@@ -10,6 +10,6 @@ public class DoesNotExistException extends RuntimeException{
 
     @Override
     public String toString() {
-        return "CategoryNotFoundException" + "-" + errMessage;
+        return "DoesNotExistException" + "-" + errMessage;
     }
 }

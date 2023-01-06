@@ -1,9 +1,12 @@
 package org.example.domain;
 
-import lombok.Data;
-import org.example.dto.todo.RequestTodo;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Todo extends BaseEntity {
 
     private Long id;
@@ -19,15 +22,5 @@ public class Todo extends BaseEntity {
     private Long teamId;
 
     private String team;
-
-    public void update(RequestTodo requestTodo){
-
-        this.content = requestTodo.getContent();
-
-        this.deadline = requestTodo.getDeadline();
-
-        this.categoryId = requestTodo.getCategoryId();
-
-    }
 
 }

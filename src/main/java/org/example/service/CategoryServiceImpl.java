@@ -36,11 +36,10 @@ public class CategoryServiceImpl implements CategoryService{
 
     public Category updateCategory(Long id, RequestCategory requestCategory) {
 
-        Category category = categoryMapper.selectCategory(id);
-        if (category == null) {
-            throw new DoesNotExistException("Category Not Found");
-        }
-        category.update(requestCategory);
+        Category category = Category.builder()
+                .id(id)
+                .content(requestCategory.getContent())
+                .build();
         categoryMapper.updateCategory(category);
         return categoryMapper.selectCategory(id);
 

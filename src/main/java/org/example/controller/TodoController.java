@@ -72,7 +72,7 @@ public class TodoController {
     }
 
     @Permission(role = Permission.PermissionRole.USER)
-    @GetMapping("/team")
+    @GetMapping
     public ResponseEntity<List<Todo>> getTeamTodoListByTeamName(@RequestParam(value = "teamName") String teamName){
 
         return new ResponseEntity<>(todoService.getTeamTodoListByTeamName(teamName), HttpStatus.OK);
