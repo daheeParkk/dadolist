@@ -5,6 +5,8 @@ import org.example.domain.Todo;
 import org.example.dto.todo.RequestTodo;
 import org.example.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,83 +26,81 @@ public class TodoController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/user/{id}")
-    public void userWriteTodo(@PathVariable("id") Long userId, @RequestBody Todo todo) {
+    public ResponseEntity<Todo> userWriteTodo(@PathVariable("id") Long userId, @RequestBody Todo todo) {
 
-        todoService.userWriteTodo(userId, todo);
-
+        return new ResponseEntity<>(todoService.userWriteTodo(userId, todo), HttpStatus.CREATED);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public Todo updateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo) {
+    public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody RequestTodo requestTodo) {
 
-        return todoService.updateTodo(id, requestTodo);
+        return new ResponseEntity<>(todoService.updateTodo(id, requestTodo), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/user/{id}/{todoId}")
-    public List<Todo> userDeleteTodo(@PathVariable("id") Long userId, @PathVariable Long todoId) {
+    public ResponseEntity<List<Todo>> userDeleteTodo(@PathVariable("id") Long userId, @PathVariable Long todoId) {
 
-        return todoService.userDeleteTodo(userId,todoId);
+        return new ResponseEntity<>(todoService.userDeleteTodo(userId,todoId), HttpStatus.NO_CONTENT);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/team/{id}")
-    public void teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
+    public ResponseEntity<Todo> teamWriteTodo(@PathVariable("id") Long teamId, @RequestBody Todo todo){
 
-        todoService.teamWriteTodo(teamId, todo);
+        return new ResponseEntity<>(todoService.teamWriteTodo(teamId, todo), HttpStatus.CREATED);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/team/{id}/{todoId}")
-    public List<Todo> teamDeleteTodo(@PathVariable("id") Long teamId, @PathVariable Long todoId){
+    public ResponseEntity<List<Todo>> teamDeleteTodo(@PathVariable("id") Long teamId, @PathVariable Long todoId){
 
-        return todoService.teamDeleteTodo(teamId, todoId);
+        return new ResponseEntity<>(todoService.teamDeleteTodo(teamId, todoId), HttpStatus.NO_CONTENT);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
-    public List<Todo> getTodoList(@PathVariable("id") Long userId){
+    public ResponseEntity<List<Todo>> getTodoList(@PathVariable("id") Long userId){
 
-        return todoService.getTodoList(userId);
+        return new ResponseEntity<>(todoService.getTodoList(userId), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/team")
-    public List<Todo> getTeamTodoListByTeamName(@RequestParam(value = "teamName") String teamName){
+    public ResponseEntity<List<Todo>> getTeamTodoListByTeamName(@RequestParam(value = "teamName") String teamName){
 
-        return todoService.getTeamTodoListByTeamName(teamName);
+        return new ResponseEntity<>(todoService.getTeamTodoListByTeamName(teamName), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/month/{id}")
-    public List<Todo> getTodoListByMonth(@PathVariable("id") Long userId, @RequestParam(value = "month") String month){
+    public ResponseEntity<List<Todo>> getTodoListByMonth(@PathVariable("id") Long userId, @RequestParam(value = "month") String month){
 
-        return todoService.getTodoListByMonth(userId, month);
+        return new ResponseEntity<>(todoService.getTodoListByMonth(userId, month), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/day/{id}")
-    public List<Todo> getTodoListByDays(@PathVariable("id") Long userId, @RequestParam(value = "month") String month,
+    public ResponseEntity<List<Todo>> getTodoListByDays(@PathVariable("id") Long userId, @RequestParam(value = "month") String month,
                                          @RequestParam(value = "days") String days){
 
-        return todoService.getTodoListByDays(userId, month, days);
+        return new ResponseEntity<>(todoService.getTodoListByDays(userId, month, days), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/category/{id}")
-    public List<Todo> getTodoListByCategory(@PathVariable("id") Long userId, @RequestParam(value = "category") String category){
+    public ResponseEntity<List<Todo>> getTodoListByCategory(@PathVariable("id") Long userId, @RequestParam(value = "category") String category){
 
-        return todoService.getTodoListByCategory(userId, category);
-
+        return new ResponseEntity<>(todoService.getTodoListByCategory(userId, category), HttpStatus.OK);
     }
 
 }

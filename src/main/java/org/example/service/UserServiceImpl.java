@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void createAdmin(User user) {
+    public User createAdmin(User user) {
 
         if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
             throw new DuplicateException("This ID exists.");
@@ -60,12 +60,13 @@ public class UserServiceImpl implements UserService{
             user.setPassword(encryptedPassword);
             userMapper.createUser(user);
             userMapper.createAdmin(user.getId(), true);
+            return userMapper.selectUser(user.getId());
         }
 
     }
 
     @Override
-    public void createUser(User user) {
+    public User createUser(User user) {
 
         if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
             throw new DuplicateException("This ID exists.");
@@ -75,6 +76,7 @@ public class UserServiceImpl implements UserService{
             String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
             user.setPassword(encryptedPassword);
             userMapper.createUser(user);
+            return userMapper.selectUser(user.getId());
         }
 
     }

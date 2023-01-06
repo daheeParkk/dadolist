@@ -3,6 +3,8 @@ package org.example.controller;
 import org.example.annotation.Permission;
 import org.example.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,17 +26,18 @@ public class JWTController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/refresh/{id}")
-    public void refreshTokenReissue(@PathVariable("id") Long id){
+    public ResponseEntity<String> refreshTokenReissue(@PathVariable("id") Long id){
 
-        String refreshToken = jwtService.refreshTokenReissue(id);
+        return new ResponseEntity<>(jwtService.refreshTokenReissue(id), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/access")
-    public void accessTokenReissue(HttpServletRequest request){
+    public ResponseEntity<String> accessTokenReissue(HttpServletRequest request){
 
         String refreshToken = (request.getHeader("Authorization")).substring(7);
-        String accessToken = jwtService.accessTokenReissue(refreshToken);
+
+        return new ResponseEntity<>(jwtService.accessTokenReissue(refreshToken), HttpStatus.OK);
 
     }
 

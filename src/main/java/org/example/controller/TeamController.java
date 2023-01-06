@@ -6,6 +6,8 @@ import org.example.domain.Team;
 import org.example.dto.team.RequestTeam;
 import org.example.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,34 +27,32 @@ public class TeamController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping
-    public Team createTeam(@RequestBody Team team) {
+    public ResponseEntity<Team> createTeam(@RequestBody Team team) {
 
-        return teamService.createTeam(team);
+        return new ResponseEntity<>(teamService.createTeam(team), HttpStatus.CREATED);
 
     }
 
     @NoAuth
     @GetMapping
-    public List<Team> getTeamList() {
+    public ResponseEntity<List<Team>> getTeamList() {
 
-        return teamService.getTeamList();
+        return new ResponseEntity<>(teamService.getTeamList(), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}")
-    public List<Team> deleteTeam(@PathVariable Long id) {
+    public ResponseEntity<List<Team>> deleteTeam(@PathVariable Long id) {
 
-        return teamService.deleteTeam(id);
-
+        return new ResponseEntity<>(teamService.deleteTeam(id), HttpStatus.NO_CONTENT);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public Team changeTeamName(@PathVariable Long id, @RequestBody RequestTeam requestTeam) {
+    public ResponseEntity<Team> changeTeamName(@PathVariable Long id, @RequestBody RequestTeam requestTeam) {
 
-        return teamService.changeTeamName(id, requestTeam);
-
+        return new ResponseEntity<>(teamService.changeTeamName(id, requestTeam), HttpStatus.OK);
     }
 
 }

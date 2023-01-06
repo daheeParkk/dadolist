@@ -14,30 +14,30 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = DoesNotExistException.class)
     public ResponseEntity<String> DoesNotExistException(DoesNotExistException e){
 
-        return new ResponseEntity<String>(e.toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = DifferentPasswordException.class)
     public ResponseEntity<String> DifferentPasswordException(DifferentPasswordException e){
 
-        return new ResponseEntity<String>(e.toString(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.toString(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = DuplicateException.class)
     public ResponseEntity<String> DuplicateException(DuplicateException e){
 
-        return new ResponseEntity<String>(e.toString(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.toString(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)
     public ResponseEntity<String> UnauthorizedException(UnauthorizedException e) {
 
-        return new ResponseEntity<String>(e.toString(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.toString(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = UnprivilegedAPIException.class)
     public ResponseEntity<String> UnprivilegedAPIException(UnprivilegedAPIException e) {
 
-        return new ResponseEntity<String>(e.toString(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(e.toString(), HttpStatus.FORBIDDEN);
     }
 }

@@ -27,11 +27,12 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void userWriteTodo(Long userId, Todo todo) {
+    public Todo userWriteTodo(Long userId, Todo todo) {
 
         todoMapper.writeTodo(todo);
         Long todoId = todo.getId();
         todoUserMapper.createTodoUser(userId, todoId);
+        return todoMapper.getTodo(todoId);
 
     }
 
@@ -58,9 +59,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void teamWriteTodo(Long teamId, Todo todo) {
+    public Todo teamWriteTodo(Long teamId, Todo todo) {
 
         todoMapper.teamWriteTodo(teamId, todo);
+        Long todoId = todo.getId();
+        return todoMapper.getTodo(todoId);
 
     }
 

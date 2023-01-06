@@ -6,6 +6,8 @@ import org.example.domain.Category;
 import org.example.dto.category.RequestCategory;
 import org.example.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,33 +27,33 @@ public class CategoryController {
 
     @Permission(role = Permission.PermissionRole.ADMIN)
     @PostMapping
-    public Category createCategory(@RequestBody Category category){
+    public ResponseEntity<Category> createCategory(@RequestBody Category category){
 
-        return categoryService.createCategory(category);
+        return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.CREATED);
 
     }
 
     @NoAuth
     @GetMapping
-    public List<Category> getCategory(){
+    public ResponseEntity<List<Category>> getCategory(){
 
-        return categoryService.getCategory();
+        return new ResponseEntity<>(categoryService.getCategory(), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.ADMIN)
     @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable("id") Long id, @RequestBody RequestCategory requestCategory){
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") Long id, @RequestBody RequestCategory requestCategory){
 
-        return categoryService.updateCategory(id, requestCategory);
+        return new ResponseEntity<>(categoryService.updateCategory(id, requestCategory), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.ADMIN)
     @DeleteMapping("/{id}")
-    public List<Category> deleteCategory(@PathVariable("id") Long id){
+    public ResponseEntity<List<Category>> deleteCategory(@PathVariable("id") Long id){
 
-        return categoryService.deleteCategory(id);
+        return new ResponseEntity<>(categoryService.deleteCategory(id), HttpStatus.NO_CONTENT);
 
     }
 

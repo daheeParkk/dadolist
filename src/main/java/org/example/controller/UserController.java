@@ -30,73 +30,71 @@ public class UserController {
     }
 
     @PostMapping("/admin")
-    public void createAdmin(@RequestBody User user) {
-        userService.createAdmin(user);
+    public ResponseEntity<User> createAdmin(@RequestBody User user) {
+
+        return new ResponseEntity<>(userService.createAdmin(user), HttpStatus.CREATED);
     }
 
     @NoAuth
     @PostMapping
-    public void createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody User user){
 
-        userService.createUser(user);
-
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @NoAuth
     @PostMapping("/login")
-    public JwtToken login(@RequestBody RequestLogin requestLogin){
+    public ResponseEntity<JwtToken> login(@RequestBody RequestLogin requestLogin){
 
         JwtToken jwtToken = userService.login(requestLogin);
-        return jwtToken;
+        return new ResponseEntity<>(jwtToken, HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
 
         userService.deleteUser(id);
+        return new ResponseEntity<>("User deleted", HttpStatus.NO_CONTENT);
 
     }
 
     @NoAuth
     @GetMapping
-    public List<User> getUser(){
+    public ResponseEntity<List<User>> getUser(){
 
-        return userService.getUser();
-
+        return new ResponseEntity<>(userService.getUser(), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
-    public User getInformation(@PathVariable("id") Long id){
+    public ResponseEntity<User> getInformation(@PathVariable("id") Long id){
 
-        return userService.getInformation(id);
+        return new ResponseEntity<>(userService.getInformation(id), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody RequestUser requestUser){
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody RequestUser requestUser){
 
-        return userService.updateUser(id, requestUser);
-
+        return new ResponseEntity<>(userService.updateUser(id, requestUser), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/{id}/team")
-    public User joinTeam(@PathVariable("id") Long id, @RequestBody String teamName){
+    public ResponseEntity<User> joinTeam(@PathVariable("id") Long id, @RequestBody String teamName){
 
-        return userService.joinTeam(id, teamName);
+        return new ResponseEntity<>(userService.joinTeam(id, teamName), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}/team")
-    public User leaveTeam(@PathVariable("id") Long id, @RequestBody String teamName) {
+    public ResponseEntity<User> leaveTeam(@PathVariable("id") Long id, @RequestBody String teamName) {
 
-        return userService.leaveTeam(id, teamName);
-
+        return new ResponseEntity<>(userService.leaveTeam(id, teamName), HttpStatus.NO_CONTENT);
     }
 
 }

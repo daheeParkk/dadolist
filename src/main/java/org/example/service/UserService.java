@@ -11,9 +11,9 @@ import java.util.Map;
 
 public interface UserService {
 
-    void createAdmin(User user);
+    User createAdmin(User user);
 
-    void createUser(User user);
+    User createUser(User user);
 
     JwtToken login(RequestLogin requestLogin);
 
