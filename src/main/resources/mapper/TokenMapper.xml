@@ -19,7 +19,8 @@
     </insert>
 
     <select id="getRefreshToken" resultMap="tokenResultMap">
-        select refresh_token from token
+        select refresh_token
+        from token
         where user_id = #{id} and is_deleted = false
     </select>
 

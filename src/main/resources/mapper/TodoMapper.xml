@@ -26,14 +26,14 @@
     </select>
 
     <select id="getTodoList" resultMap="todoResultMap">
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where t.is_deleted = false
         union
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
@@ -42,7 +42,7 @@
     </select>
 
     <select id="getTeamTodoListByTeamId" resultMap="todoResultMap">
-        select t.id, te.id as teamId, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.id as teamId, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  join team te on t.team_id = te.id and te.id = #{teamId}
@@ -50,7 +50,7 @@
     </select>
     
     <select id="getTeamTodoListByTeamName" resultMap="todoResultMap">
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  join team te on t.team_id = te.id and te.name = #{teamName}
@@ -58,14 +58,14 @@
     </select>
 
     <select id="getTodoListByMonth" resultMap="todoResultMap">
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where month(deadline) = #{month} and t.is_deleted = false
         union
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
@@ -74,14 +74,14 @@
     </select>
 
     <select id="getTodoListByDays" resultMap="todoResultMap">
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
         union
-        select t.id, te.name as team, t.content, t.deadline, c.content as category
+        select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
@@ -90,14 +90,14 @@
     </select>
 
     <select id="getTodoListByCategory" resultMap="todoResultMap">
-        select t.id, te.name as name, t.content, t.deadline, c.content as category
+        select t.id, te.name as name, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
         where c.content = #{category} and t.is_deleted = false
         union
-        select t.id, te.name as name, t.content, t.deadline, c.content as category
+        select t.id, te.name as name, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id

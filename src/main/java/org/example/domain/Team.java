@@ -6,10 +6,13 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Team extends BaseEntity{
 
     private Long id;
 
     private String teamName;
+
+    private Long numOfUsers;
 
 }

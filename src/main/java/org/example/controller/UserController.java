@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
+import org.example.domain.Team;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
@@ -84,17 +85,17 @@ public class UserController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/{id}/team")
-    public ResponseEntity<User> joinTeam(@PathVariable("id") Long id, @RequestBody String teamName){
+    public ResponseEntity<User> joinTeam(@PathVariable("id") Long id, @RequestBody Team team){
 
-        return new ResponseEntity<>(userService.joinTeam(id, teamName), HttpStatus.OK);
+        return new ResponseEntity<>(userService.joinTeam(id, team.getTeamName()), HttpStatus.OK);
 
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @DeleteMapping("/{id}/team")
-    public ResponseEntity<User> leaveTeam(@PathVariable("id") Long id, @RequestBody String teamName) {
+    public ResponseEntity<User> leaveTeam(@PathVariable("id") Long id, @RequestBody Team team) {
 
-        return new ResponseEntity<>(userService.leaveTeam(id, teamName), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(userService.leaveTeam(id, team.getTeamName()), HttpStatus.NO_CONTENT);
     }
 
 }

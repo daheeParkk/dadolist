@@ -143,7 +143,6 @@ public class UserServiceImpl implements UserService{
     public User joinTeam(Long id, String teamName) {
 
         Team info = teamMapper.selectTeamByTeamName(teamName);
-        System.out.println(info);
         if (info == null){
             throw new DoesNotExistException("Team not found");
         }
@@ -154,9 +153,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User leaveTeam(Long id, String team) {
+    public User leaveTeam(Long id, String teamName) {
 
-        Team info = teamMapper.selectTeamByTeamName(team);
+        Team info = teamMapper.selectTeamByTeamName(teamName);
         if (info == null) {
             throw new DoesNotExistException("Team not found");
         }

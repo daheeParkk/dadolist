@@ -18,7 +18,7 @@
     </select>
 
     <select id="getTeam" resultMap="teamResultMap">
-        select t.id, t.name, count(tum.user_id)
+        select t.id, t.name, count(tum.user_id) as numOfUsers, t.created_at, t.updated_at, t.is_deleted
         from team t
             left outer join team_user_mapping tum on t.id = tum.team_id
             left outer join user u on u.id = tum.user_id
@@ -28,7 +28,7 @@
     <insert id="createTeam" parameterType="org.example.domain.Team">
         insert into team
             (name)
-        values (#{name})
+        values (#{teamName})
         <selectKey resultType="Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -36,7 +36,8 @@
 
     <select id="getTeamList" resultMap="teamResultMap">
         select *
-        from team where is_deleted = false
+        from team
+        where is_deleted = false
     </select>
 
     <update id="softDelete">
