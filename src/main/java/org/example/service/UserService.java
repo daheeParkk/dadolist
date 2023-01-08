@@ -2,7 +2,7 @@ package org.example.service;
 
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
-import org.example.dto.user.RequestLogin;
+import org.example.dto.user.UserVerification;
 
 import java.util.List;
 
@@ -12,7 +12,9 @@ public interface UserService {
 
     User createUser(User user);
 
-    JwtToken login(RequestLogin requestLogin);
+    JwtToken login(UserVerification userVerification);
+
+    void logout(Long id);
 
     void deleteUser(Long id);
 

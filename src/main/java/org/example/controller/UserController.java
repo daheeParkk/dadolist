@@ -5,7 +5,7 @@ import org.example.annotation.Permission;
 import org.example.domain.Team;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
-import org.example.dto.user.RequestLogin;
+import org.example.dto.user.UserVerification;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,11 +42,19 @@ public class UserController {
 
     @NoAuth
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> login(@RequestBody RequestLogin requestLogin){
+    public ResponseEntity<JwtToken> login(@RequestBody UserVerification userVerification){
 
-        JwtToken jwtToken = userService.login(requestLogin);
+        JwtToken jwtToken = userService.login(userVerification);
         return new ResponseEntity<>(jwtToken, HttpStatus.OK);
 
+    }
+
+    @Permission(role = Permission.PermissionRole.USER)
+    @GetMapping("/logout/{id}")
+    public ResponseEntity<String> logout(@PathVariable("id") Long id) {
+
+        userService.logout(id);
+        return new ResponseEntity<>("Refresh token deleted", HttpStatus.NO_CONTENT);
     }
 
     @Permission(role = Permission.PermissionRole.USER)

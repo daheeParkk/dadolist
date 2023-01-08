@@ -19,21 +19,22 @@ public class JWTController {
     private final JWTService jwtService;
 
     @Autowired
-    public JWTController(JWTService jwtService){
+    public JWTController(JWTService jwtService) {
+
         this.jwtService = jwtService;
     }
 
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
-    public ResponseEntity<String> refreshTokenReissue(@PathVariable("id") Long id){
+    public ResponseEntity<String> refreshTokenReissue(@PathVariable("id") Long id) {
 
         return new ResponseEntity<>(jwtService.refreshTokenReissue(id), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping
-    public ResponseEntity<String> accessTokenReissue(HttpServletRequest request){
+    public ResponseEntity<String> accessTokenReissue(HttpServletRequest request) {
 
         String refreshToken = (request.getHeader("Authorization")).substring(7);
 

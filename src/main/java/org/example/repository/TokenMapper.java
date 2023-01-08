@@ -8,8 +8,6 @@ public interface TokenMapper {
 
     void createRefreshToken(@Param("id") Long id, @Param("refreshToken") String refreshToken);
 
-    String getRefreshToken(Long id);
-
-    void deleteRefreshToken(@Param("isDeleted") Boolean isDeleted, @Param("id") Long id);
+    void deleteRefreshToken(Long id);
 
 }

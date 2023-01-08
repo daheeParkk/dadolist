@@ -18,16 +18,8 @@
         values (#{id}, #{refreshToken})
     </insert>
 
-    <select id="getRefreshToken" resultMap="tokenResultMap">
-        select refresh_token
-        from token
-        where user_id = #{id} and is_deleted = false
-    </select>
-
-    <update id="deleteRefreshToken">
-        update token set
-                                is_deleted = #{isDeleted}
-        where user_id = #{id}
-    </update>
+    <delete id="deleteRefreshToken">
+        delete from token where user_id = #{id}
+    </delete>
 
 </mapper>

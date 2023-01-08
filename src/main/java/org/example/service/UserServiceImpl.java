@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.domain.Team;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
-import org.example.dto.user.RequestLogin;
+import org.example.dto.user.UserVerification;
 import org.example.exception.DoesNotExistException;
 import org.example.exception.DuplicateException;
 import org.example.repository.TeamMapper;
@@ -87,20 +87,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JwtToken login(RequestLogin requestLogin) {
+    public JwtToken login(UserVerification userVerification) {
 
-        User info = userMapper.selectUserByUserId(requestLogin.getUserId());
+        User info = userMapper.selectUserByUserId(userVerification.getUserId());
 
         if (info == null) {
             throw new DoesNotExistException("User not found");
         }
 
-        bcryptUtil.checkPassword(requestLogin.getPassword(), info.getPassword());
+        bcryptUtil.checkPassword(userVerification.getPassword(), info.getPassword());
 
         JwtToken token = jwtUtil.crateToken(info.getId(), true, true);
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
         return token;
+    }
+
+    @Override
+    public void logout(Long id) {
+
+        tokenMapper.deleteRefreshToken(id);
+
     }
 
     @Override
