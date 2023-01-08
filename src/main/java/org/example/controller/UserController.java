@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -21,10 +22,9 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
 
         this.userService = userService;
-
     }
 
     @PostMapping("/admin")
@@ -35,65 +35,61 @@ public class UserController {
 
     @NoAuth
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody User user) {
 
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @NoAuth
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> login(@RequestBody UserVerification userVerification){
+    public ResponseEntity<JwtToken> login(@RequestBody UserVerification userVerification) {
 
         JwtToken jwtToken = userService.login(userVerification);
         return new ResponseEntity<>(jwtToken, HttpStatus.OK);
-
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Permission(role = Permission.PermissionRole.USER)
-    @GetMapping("/logout/{id}")
-    public ResponseEntity<String> logout(@PathVariable("id") Long id) {
+    @GetMapping(value = "/logout/{id}")
+    public void logout(@PathVariable("id") Long id) {
 
         userService.logout(id);
-        return new ResponseEntity<>("Refresh token deleted", HttpStatus.NO_CONTENT);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Permission(role = Permission.PermissionRole.USER)
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
+    @DeleteMapping(value = "/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
 
         userService.deleteUser(id);
-        return new ResponseEntity<>("User deleted", HttpStatus.NO_CONTENT);
-
     }
 
     @NoAuth
     @GetMapping
-    public ResponseEntity<List<User>> getUser(){
+    public ResponseEntity<List<User>> getUser() {
 
         return new ResponseEntity<>(userService.getUser(), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping("/{id}")
-    public ResponseEntity<User> getInformation(@PathVariable("id") Long id){
+    public ResponseEntity<User> getInformation(@PathVariable("id") Long id) {
 
         return new ResponseEntity<>(userService.getInformation(id), HttpStatus.OK);
-
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
 
         return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping("/{id}/team")
-    public ResponseEntity<User> joinTeam(@PathVariable("id") Long id, @RequestBody Team team){
+    public ResponseEntity<User> joinTeam(@PathVariable("id") Long id, @RequestBody Team team) {
 
         return new ResponseEntity<>(userService.joinTeam(id, team.getTeamName()), HttpStatus.OK);
-
     }
 
     @Permission(role = Permission.PermissionRole.USER)

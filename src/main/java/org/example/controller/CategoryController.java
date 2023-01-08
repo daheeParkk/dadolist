@@ -18,14 +18,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService){
+    public CategoryController(CategoryService categoryService) {
 
         this.categoryService = categoryService;
     }
 
     @Permission(role = Permission.PermissionRole.ADMIN)
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 
         return new ResponseEntity<>(categoryService.createCategory(category), HttpStatus.CREATED);
     }
