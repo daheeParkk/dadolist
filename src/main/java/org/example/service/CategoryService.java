@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Category;
-import org.example.dto.category.RequestCategory;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public interface CategoryService {
 
     List<Category> getCategory();
 
-    Category updateCategory(Long id, RequestCategory requestCategory);
+    Category updateCategory(Long id, Category category);
 
     List<Category> deleteCategory(Long id);
 }

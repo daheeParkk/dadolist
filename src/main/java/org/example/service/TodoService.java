@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Todo;
-import org.example.dto.todo.RequestTodo;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ public interface TodoService {
 
     Todo userWriteTodo(Long userId, Todo todo);
 
-    Todo updateTodo(Long id, RequestTodo requestTodo);
+    Todo updateTodo(Long id, Todo todo);
 
     List<Todo> userDeleteTodo(Long userId, Long todoId);
 

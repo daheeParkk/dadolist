@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
 
     private final JWTUtil jwtUtil;
 
     @Autowired
-    public JWTServiceImpl(JWTUtil jwtUtil){
+    public JWTServiceImpl(JWTUtil jwtUtil) {
+
         this.jwtUtil = jwtUtil;
     }
 
@@ -19,6 +20,7 @@ public class JWTServiceImpl implements JWTService{
     public String refreshTokenReissue(Long id) {
 
         JwtToken jwtToken = jwtUtil.crateToken(id, false, true);
+
         return jwtToken.getRefreshToken();
     }
 
@@ -27,7 +29,7 @@ public class JWTServiceImpl implements JWTService{
 
         Long userId = jwtUtil.isTokenExpired(refreshToken);
         JwtToken jwtToken = jwtUtil.crateToken(userId, true, false);
-        return jwtToken.getAccessToken();
 
+        return jwtToken.getAccessToken();
     }
 }

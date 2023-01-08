@@ -17,14 +17,14 @@ import java.util.Map;
 public class JWTUtil {
 
     private final UserMapper userMapper;
+    @Value("${jwt.secret_key}")
+    private String key;
 
     @Autowired
     public JWTUtil(UserMapper userMapper) {
+
         this.userMapper = userMapper;
     }
-
-    @Value("${jwt.secret_key}")
-    private String key;
 
     public JwtToken crateToken(Long id, Boolean createAccess, Boolean createRefresh) {
 
@@ -37,7 +37,7 @@ public class JWTUtil {
 
         JwtToken jwtToken = new JwtToken();
 
-        if (createAccess){
+        if (createAccess) {
 
             int accessExpiredTime = 1000 * 60 * 60;           // 1시간
             Date accessExt = new Date();
@@ -53,7 +53,7 @@ public class JWTUtil {
             jwtToken.setAccessToken(accessToken);
         }
 
-        if (createRefresh){
+        if (createRefresh) {
 
             int refreshExpiredTime = 1000 * 60 * 60 * 24 * 3;    // 3일
             Date refreshExt = new Date();
@@ -70,19 +70,16 @@ public class JWTUtil {
         }
 
         return jwtToken;
-
     }
 
     // 토큰 유효성 검증
     public Long isTokenExpired(String token) {
 
-        try{
-
+        try {
             Claims claims = Jwts.parser()
                     .setSigningKey(key.getBytes()).parseClaimsJws(token).getBody();
 
-            Long userId = Long.parseLong(claims.getSubject());
-            return userId;
+            return Long.parseLong(claims.getSubject());
 
         } catch (ExpiredJwtException e) {  // Token이 만료된 경우
             throw new UnauthorizedException("expired token");
@@ -92,13 +89,11 @@ public class JWTUtil {
         }
     }
 
-    public User validate(String accessToken){
+    public User validate(String accessToken) {
 
         Long userId = isTokenExpired(accessToken);
-        User user = userMapper.selectUser(userId);
 
-        return user;
-
+        return userMapper.selectUser(userId);
     }
 
 }

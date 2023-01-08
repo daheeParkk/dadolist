@@ -22,7 +22,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if(!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod)) {
             return true;
         }
 
@@ -32,7 +32,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
         NoAuth noAuth = handlerMethod.getMethodAnnotation(NoAuth.class);
 
-        if(noAuth != null) {
+        if (noAuth != null) {
             return true;
         }
 
@@ -54,7 +54,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             }
         }
 
-        if(permission.role().equals(Permission.PermissionRole.USER)) {      // 유저 API
+        if (permission.role().equals(Permission.PermissionRole.USER)) {      // 유저 API
             if (user.getAuthority() == null) {
                 throw new UnprivilegedAPIException("not authorized");
             }

@@ -2,7 +2,6 @@ package org.example.repository;
 
 import org.apache.ibatis.annotations.Param;
 import org.example.domain.Todo;
-import org.example.dto.todo.GetTodoList;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

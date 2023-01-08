@@ -21,8 +21,11 @@
     </insert>
 
     <select id="getTodo" resultMap="todoResultMap">
-        select * from todo
-        where id = #{todoId} and is_deleted = false
+        select t.id, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
+        from todo t
+                 left outer join category c on t.category_id = c.id
+                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
+        where t.is_deleted = false
     </select>
 
     <select id="getTodoList" resultMap="todoResultMap">

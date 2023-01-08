@@ -1,8 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Team;
-import org.example.dto.team.RequestTeam;
-import org.example.exception.DoesNotExistException;
 import org.example.repository.TeamMapper;
 import org.example.repository.TeamUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +17,24 @@ public class TeamServiceImpl implements TeamService {
     private final TeamUserMapper teamUserMapper;
 
     @Autowired
-    public TeamServiceImpl(TeamMapper teamMapper, TeamUserMapper teamUserMapper){
+    public TeamServiceImpl(TeamMapper teamMapper, TeamUserMapper teamUserMapper) {
 
         this.teamMapper = teamMapper;
         this.teamUserMapper = teamUserMapper;
-
     }
 
     @Override
     public Team createTeam(Team team) {
 
         teamMapper.createTeam(team);
-        return teamMapper.getTeam(team.getId());
 
+        return teamMapper.getTeam(team.getId());
     }
 
     @Override
     public List<Team> getTeamList() {
 
         return teamMapper.getTeamList();
-
     }
 
     @Transactional
@@ -47,20 +43,20 @@ public class TeamServiceImpl implements TeamService {
 
         teamMapper.softDelete(true, id);
         teamUserMapper.softDelete(true, id);
-        return teamMapper.getTeamList();
 
+        return teamMapper.getTeamList();
     }
 
     @Override
-    public Team changeTeamName(Long id, RequestTeam requestTeam) {
+    public Team changeTeamName(Long id, Team team) {
 
-        Team team = Team.builder()
+        Team changedTeamName = Team.builder()
                 .id(id)
-                .teamName(requestTeam.getName())
+                .teamName(team.getTeamName())
                 .build();
-        teamMapper.updateTeam(team);
-        return teamMapper.getTeam(id);
+        teamMapper.updateTeam(changedTeamName);
 
+        return teamMapper.getTeam(id);
     }
 
 }

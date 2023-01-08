@@ -1,8 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Category;
-import org.example.dto.category.RequestCategory;
-import org.example.exception.DoesNotExistException;
 import org.example.repository.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,46 +8,44 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryServiceImpl(CategoryMapper categoryMapper){
+    public CategoryServiceImpl(CategoryMapper categoryMapper) {
 
         this.categoryMapper = categoryMapper;
-
     }
 
     public Category createCategory(Category category) {
 
         categoryMapper.createCategory(category);
-        return categoryMapper.selectCategory(category.getId());
 
+        return categoryMapper.selectCategory(category.getId());
     }
 
     public List<Category> getCategory() {
 
         return categoryMapper.getCategory();
-
     }
 
-    public Category updateCategory(Long id, RequestCategory requestCategory) {
+    public Category updateCategory(Long id, Category category) {
 
-        Category category = Category.builder()
+        Category updatedCategory = Category.builder()
                 .id(id)
-                .content(requestCategory.getContent())
+                .content(category.getContent())
                 .build();
-        categoryMapper.updateCategory(category);
-        return categoryMapper.selectCategory(id);
+        categoryMapper.updateCategory(updatedCategory);
 
+        return categoryMapper.selectCategory(id);
     }
 
     public List<Category> deleteCategory(Long id) {
 
         categoryMapper.softDelete(true, id);
-        return categoryMapper.getCategory();
 
+        return categoryMapper.getCategory();
     }
 
 }

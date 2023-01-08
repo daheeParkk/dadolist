@@ -38,7 +38,6 @@ public class JWTController {
         String refreshToken = (request.getHeader("Authorization")).substring(7);
 
         return new ResponseEntity<>(jwtService.accessTokenReissue(refreshToken), HttpStatus.OK);
-
     }
 
 }

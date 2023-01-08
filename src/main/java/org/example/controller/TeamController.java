@@ -3,7 +3,6 @@ package org.example.controller;
 import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
 import org.example.domain.Team;
-import org.example.dto.team.RequestTeam;
 import org.example.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ public class TeamController {
     public TeamController(TeamService teamService) {
 
         this.teamService = teamService;
-
     }
 
     @Permission(role = Permission.PermissionRole.USER)
@@ -30,7 +28,6 @@ public class TeamController {
     public ResponseEntity<Team> createTeam(@RequestBody Team team) {
 
         return new ResponseEntity<>(teamService.createTeam(team), HttpStatus.CREATED);
-
     }
 
     @NoAuth
@@ -38,7 +35,6 @@ public class TeamController {
     public ResponseEntity<List<Team>> getTeamList() {
 
         return new ResponseEntity<>(teamService.getTeamList(), HttpStatus.OK);
-
     }
 
     @Permission(role = Permission.PermissionRole.USER)
@@ -50,9 +46,9 @@ public class TeamController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public ResponseEntity<Team> changeTeamName(@PathVariable Long id, @RequestBody RequestTeam requestTeam) {
+    public ResponseEntity<Team> changeTeamName(@PathVariable Long id, @RequestBody Team team) {
 
-        return new ResponseEntity<>(teamService.changeTeamName(id, requestTeam), HttpStatus.OK);
+        return new ResponseEntity<>(teamService.changeTeamName(id, team), HttpStatus.OK);
     }
 
 }

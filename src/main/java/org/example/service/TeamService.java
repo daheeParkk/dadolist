@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.domain.Team;
-import org.example.dto.team.RequestTeam;
 
 import java.util.List;
 
@@ -13,6 +12,6 @@ public interface TeamService {
 
     List<Team> deleteTeam(Long id);
 
-    Team changeTeamName(Long id, RequestTeam requestTeam);
+    Team changeTeamName(Long id, Team team);
 
 }

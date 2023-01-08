@@ -4,7 +4,6 @@ import org.example.domain.Team;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
-import org.example.dto.user.RequestUser;
 import org.example.exception.DoesNotExistException;
 import org.example.exception.DuplicateException;
 import org.example.repository.TeamMapper;
@@ -53,11 +52,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createAdmin(User user) {
 
-        if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
+        if (userMapper.countUserIdByUserId(user.getUserId()) == 1) {
             throw new DuplicateException("This ID exists.");
+
         } else if (userMapper.countNicknameByNickname(user.getNickname()) == 1) {
             throw new DuplicateException("This Nickname exists.");
         } else {
+
             String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
             user.setPassword(encryptedPassword);
             userMapper.createUser(user);
@@ -70,10 +71,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createUser(User user) {
 
-        if(userMapper.countUserIdByUserId(user.getUserId()) == 1){
+        if (userMapper.countUserIdByUserId(user.getUserId()) == 1) {
             throw new DuplicateException("This ID exists.");
+
         } else if (userMapper.countNicknameByNickname(user.getNickname()) == 1) {
             throw new DuplicateException("This Nickname exists.");
+
         } else {
             String encryptedPassword = bcryptUtil.encrypt(user.getPassword());
             user.setPassword(encryptedPassword);
@@ -88,7 +91,7 @@ public class UserServiceImpl implements UserService{
 
         User info = userMapper.selectUserByUserId(requestLogin.getUserId());
 
-        if(info == null){
+        if (info == null) {
             throw new DoesNotExistException("User not found");
         }
 
@@ -98,71 +101,71 @@ public class UserServiceImpl implements UserService{
         tokenMapper.createRefreshToken(info.getId(), token.getRefreshToken());
 
         return token;
-
     }
 
     @Override
     public void deleteUser(Long id) {
 
         userMapper.softDelete(true, id);
-
     }
 
     @Override
     public List<User> getUser() {
 
         return userMapper.getUser();
-
     }
 
     @Override
     public User getInformation(Long id) {
 
         return userMapper.selectUser(id);
-
     }
 
     @Override
-    public User updateUser(Long id, RequestUser requestUser) {
+    public User updateUser(Long id, User user) {
 
-        User user = User.builder()
+        User updatedUser = User.builder()
                 .id(id)
-                .name(requestUser.getName())
-                .nickname(requestUser.getNickname())
-                .userId(requestUser.getUserId())
-                .password(requestUser.getPassword())
-                .email(requestUser.getEmail())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .userId(user.getUserId())
+                .password(user.getPassword())
+                .email(user.getEmail())
                 .build();
 
-        userMapper.updateUser(user);
-        return userMapper.selectUser(id);
+        userMapper.updateUser(updatedUser);
 
+        return userMapper.selectUser(id);
     }
 
     @Override
     public User joinTeam(Long id, String teamName) {
 
         Team info = teamMapper.selectTeamByTeamName(teamName);
-        if (info == null){
+
+        if (info == null) {
             throw new DoesNotExistException("Team not found");
         }
+
         Long teamId = info.getId();
         teamUserMapper.joinTeam(id, teamId);
-        return userMapper.selectUser(id);
 
+        return userMapper.selectUser(id);
     }
 
     @Override
     public User leaveTeam(Long id, String teamName) {
 
         Team info = teamMapper.selectTeamByTeamName(teamName);
+
         if (info == null) {
             throw new DoesNotExistException("Team not found");
         }
+
         Long teamId = info.getId();
         teamUserMapper.softDelete(true, teamId);
-        return userMapper.selectUser(id);
 
+        return userMapper.selectUser(id);
     }
 
 }

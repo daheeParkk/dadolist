@@ -6,16 +6,13 @@ import org.example.domain.Team;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.dto.user.RequestLogin;
-import org.example.dto.user.RequestUser;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -78,9 +75,9 @@ public class UserController {
 
     @Permission(role = Permission.PermissionRole.USER)
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody RequestUser requestUser){
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
 
-        return new ResponseEntity<>(userService.updateUser(id, requestUser), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
     }
 
     @Permission(role = Permission.PermissionRole.USER)
