@@ -7,6 +7,7 @@ import org.example.domain.User;
 import org.example.exception.UnauthorizedException;
 import org.example.exception.UnprivilegedAPIException;
 import org.example.util.JWTUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
+@Component
 public class PermissionInterceptor implements HandlerInterceptor {
 
     private final JWTUtil jwtUtil;

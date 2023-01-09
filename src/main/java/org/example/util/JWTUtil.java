@@ -1,6 +1,7 @@
 package org.example.util;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.example.domain.User;
 import org.example.dto.token.JwtToken;
 import org.example.exception.UnauthorizedException;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
