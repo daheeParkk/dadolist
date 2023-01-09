@@ -99,9 +99,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> getTodoListByMonth(Long userId, String month) {
+    public List<Todo> getTodoListByMonth(Long userId, String year, String month) {
 
-        List<Todo> todo = todoMapper.getTodoListByMonth(userId, month);
+        List<Todo> todo = todoMapper.getTodoListByMonth(userId, year, month);
 
         if (todo == null) {
             throw new DoesNotExistException("todo not found");
@@ -110,9 +110,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> getTodoListByDays(Long userId, String month, String days) {
+    public List<Todo> getTodoListByDays(Long userId, String year, String month, String days) {
 
-        List<Todo> todo = todoMapper.getTodoListByDays(userId, month, days);
+        List<Todo> todo = todoMapper.getTodoListByDays(userId, year, month, days);
 
         if (todo == null) {
             throw new DoesNotExistException("todo not found");

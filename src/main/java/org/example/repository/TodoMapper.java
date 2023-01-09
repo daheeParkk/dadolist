@@ -19,9 +19,10 @@ public interface TodoMapper {
 
     List<Todo> getTeamTodoListByTeamName(String teamName);
 
-    List<Todo> getTodoListByMonth(@Param("userId") Long userId, @Param("month") String month);
+    List<Todo> getTodoListByMonth(@Param("userId") Long userId, @Param("year") String year, @Param("month") String month);
 
-    List<Todo> getTodoListByDays(@Param("userId") Long userId, @Param("month") String month, @Param("days") String days);
+    List<Todo> getTodoListByDays(@Param("userId") Long userId, @Param("year") String year, @Param("month") String month,
+                                 @Param("days") String days);
 
     List<Todo> getTodoListByCategory(@Param("userId") Long userId, @Param("category") String category);
 

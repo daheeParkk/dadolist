@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -145,8 +146,9 @@ public class UserServiceImpl implements UserService{
         return userMapper.selectUser(id);
     }
 
+    @Transactional
     @Override
-    public User joinTeam(Long id, String teamName) {
+    public List<String> joinTeam(Long id, String teamName) {
 
         Team info = teamMapper.selectTeamByTeamName(teamName);
 
@@ -157,7 +159,7 @@ public class UserServiceImpl implements UserService{
         Long teamId = info.getId();
         teamUserMapper.joinTeam(id, teamId);
 
-        return userMapper.selectUser(id);
+        return userMapper.getTeams(id);
     }
 
     @Override

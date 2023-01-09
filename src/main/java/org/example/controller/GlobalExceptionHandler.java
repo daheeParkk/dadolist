@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = DuplicateException.class)
     public ResponseEntity<String> DuplicateException(DuplicateException e) {
 
-        return new ResponseEntity<>(e.toString(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)

@@ -24,7 +24,7 @@ public interface UserService {
 
     User updateUser(Long id, User user);
 
-    User joinTeam(Long id, String teamName);
+    List<String> joinTeam(Long id, String teamName);
 
     User leaveTeam(Long id, String teamName);
 

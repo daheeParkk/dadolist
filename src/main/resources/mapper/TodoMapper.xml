@@ -66,14 +66,14 @@
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
-        where month(deadline) = #{month} and t.is_deleted = false
+        where year(deadline) = #{year} and month(deadline) = #{month} and t.is_deleted = false
         union
         select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
-        where month(deadline) = #{month} and t.is_deleted = false
+        where year(deadline) = #{year} and month(deadline) = #{month} and t.is_deleted = false
     </select>
 
     <select id="getTodoListByDays" resultMap="todoResultMap">
@@ -82,14 +82,14 @@
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
-        where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
+        where year(deadline) = #{year} and month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
         union
         select t.id, te.name as team, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
         from todo t
                  left outer join category c on t.category_id = c.id
                  left outer join team te on t.team_id = te.id
                  join team_user_mapping teum on teum.team_id = te.id and teum.user_id = #{userId}
-        where month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
+        where year(deadline) = #{year} and month(deadline) = #{month} and day(deadline) = #{days} and t.is_deleted = false
     </select>
 
     <select id="getTodoListByCategory" resultMap="todoResultMap">

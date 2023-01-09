@@ -65,9 +65,15 @@
     </select>
 
     <select id="selectUser" parameterType="java.lang.Long" resultMap="userResultMap">
-        select u.id, u.name, u.nickname, u.user_id, password, email, t.name, authority, u.created_at, u.updated_at, u.is_deleted
-        from user u left outer join team_user_mapping tum on u.id = tum.user_id
-                    left outer join team t on t.id = tum.team_id
+        select * from user
+        where id = #{id} and is_deleted = false
+    </select>
+
+    <select id="getTeams" resultType="java.lang.String">
+        select t.name as teams
+        from user u
+                 left outer join team_user_mapping  tum on tum.user_id = u.id
+                 left outer join team t on t.id = tum.team_id
         where u.id = #{id} and u.is_deleted = false
     </select>
 

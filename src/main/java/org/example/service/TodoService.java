@@ -20,9 +20,9 @@ public interface TodoService {
 
     List<Todo> getTeamTodoListByTeamName(String teamName);
 
-    List<Todo> getTodoListByMonth(Long userId, String month);
+    List<Todo> getTodoListByMonth(Long userId, String year, String month);
 
-    List<Todo> getTodoListByDays(Long userId, String month, String days);
+    List<Todo> getTodoListByDays(Long userId, String year, String month, String days);
 
     List<Todo> getTodoListByCategory(Long userId, String category);
 

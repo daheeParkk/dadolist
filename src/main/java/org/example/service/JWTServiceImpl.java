@@ -21,20 +21,12 @@ public class JWTServiceImpl implements JWTService {
     }
 
     @Override
-    public String refreshTokenReissue(Long id) {
-
-        JwtToken jwtToken = jwtUtil.crateToken(id, false, true);
-        tokenMapper.createRefreshToken(id, jwtToken.getRefreshToken());
-
-        return jwtToken.getRefreshToken();
-    }
-
-    @Override
-    public String accessTokenReissue(String refreshToken) {
+    public JwtToken accessTokenReissue(String refreshToken) {
 
         Long userId = jwtUtil.isTokenExpired(refreshToken);
-        JwtToken jwtToken = jwtUtil.crateToken(userId, true, false);
+        JwtToken jwtToken = jwtUtil.crateToken(userId, true, true);
+        tokenMapper.createRefreshToken(userId, jwtToken.getRefreshToken());
 
-        return jwtToken.getAccessToken();
+        return jwtToken;
     }
 }

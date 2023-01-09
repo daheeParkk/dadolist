@@ -1,6 +1,8 @@
 package org.example.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.example.annotation.Permission;
+import org.example.dto.token.JwtToken;
 import org.example.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +26,10 @@ public class JWTController {
         this.jwtService = jwtService;
     }
 
-
-    @Permission(role = Permission.PermissionRole.USER)
-    @GetMapping("/{id}")
-    public ResponseEntity<String> refreshTokenReissue(@PathVariable("id") Long id) {
-
-        return new ResponseEntity<>(jwtService.refreshTokenReissue(id), HttpStatus.OK);
-    }
-
+    @ApiOperation(value = "access token 재발급", notes = "access token과 refresh token 모두 재발급")
     @Permission(role = Permission.PermissionRole.USER)
     @GetMapping
-    public ResponseEntity<String> accessTokenReissue(HttpServletRequest request) {
+    public ResponseEntity<JwtToken> accessTokenReissue(HttpServletRequest request) {
 
         String refreshToken = (request.getHeader("Authorization")).substring(7);
 

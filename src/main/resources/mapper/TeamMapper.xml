@@ -5,7 +5,7 @@
 
     <resultMap id="teamResultMap" type="org.example.domain.Team">
         <id column="id" property="id" />
-        <result column="name" property="teamName" />
+        <result column="name" property="name" />
         <result column="created_at" property="createdAt" />
         <result column="updated_at" property="updatedAt" />
         <result column="is_deleted" property="isDeleted" />

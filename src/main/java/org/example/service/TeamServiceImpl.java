@@ -52,7 +52,7 @@ public class TeamServiceImpl implements TeamService {
 
         Team changedTeamName = Team.builder()
                 .id(id)
-                .teamName(team.getTeamName())
+                .name(team.getName())
                 .build();
         teamMapper.updateTeam(changedTeamName);
 

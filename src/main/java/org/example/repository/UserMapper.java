@@ -27,4 +27,6 @@ public interface UserMapper {
 
     User selectUser(Long id);
 
+    List<String> getTeams(Long id);
+
 }
