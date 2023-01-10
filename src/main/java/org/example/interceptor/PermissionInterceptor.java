@@ -3,9 +3,12 @@ package org.example.interceptor;
 import lombok.RequiredArgsConstructor;
 import org.example.annotation.NoAuth;
 import org.example.annotation.Permission;
+import org.example.domain.Token;
 import org.example.domain.User;
+import org.example.dto.token.JwtToken;
 import org.example.exception.UnauthorizedException;
 import org.example.exception.UnprivilegedAPIException;
+import org.example.repository.TokenMapper;
 import org.example.util.JWTUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class PermissionInterceptor implements HandlerInterceptor {
 
     private final JWTUtil jwtUtil;
+
+    private final TokenMapper tokenMapper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -43,6 +48,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
         String accessToken = (request.getHeader("Authorization")).substring(7);
         User user = jwtUtil.validate(accessToken);
+
+        if (tokenMapper.getRefreshToken(user.getId()) == null) {
+            throw new UnauthorizedException("Try 'login' again");
+        }
 
         if (user.getAuthority() == null) {
             throw new UnauthorizedException("Unable to find user by token");

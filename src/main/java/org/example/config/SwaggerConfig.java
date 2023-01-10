@@ -26,6 +26,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     @Autowired
     public SwaggerConfig(PermissionInterceptor permissionInterceptor) {
+
         this.permissionInterceptor = permissionInterceptor;
     }
 
@@ -49,6 +50,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         Set<String> consumes = new HashSet<>();
         consumes.add("application/json;charset=UTF-8");
         consumes.add("application/x-www-form-urlencoded");
+
         return consumes;
     }
 
@@ -75,22 +77,27 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     // swagger에서 jwt 토큰값 넣기위한 설정
     private ApiKey apiKey() {
+
         return new ApiKey("JWT", "Authorization", "header");
     }
 
     private SecurityContext securityContext() {
+
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
     }
 
     private List<SecurityReference> defaultAuth() {
+
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
+
         return Collections.singletonList(new SecurityReference("JWT", authorizationScopes));
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(permissionInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/swagger-resources/**", "/swagger-ui/**", "v2/api-docs");

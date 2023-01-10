@@ -25,7 +25,7 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-    @ApiOperation(value ="팀 생성")
+    @ApiOperation(value = "팀 생성")
     @Permission(role = Permission.PermissionRole.USER)
     @PostMapping
     public ResponseEntity<Team> createTeam(@RequestBody Team team) {

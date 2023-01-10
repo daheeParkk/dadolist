@@ -62,8 +62,15 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo teamWriteTodo(Long teamId, Todo todo) {
 
-        todoMapper.teamWriteTodo(teamId, todo);
-        Long todoId = todo.getId();
+        Todo teamTodo = Todo.builder()
+                .content(todo.getContent())
+                .deadline(todo.getDeadline())
+                .categoryId(todo.getCategoryId())
+                .teamId(teamId)
+                .build();
+
+        todoMapper.teamWriteTodo(teamTodo);
+        Long todoId = teamTodo.getId();
 
         return todoMapper.getTodo(todoId);
     }

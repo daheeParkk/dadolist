@@ -21,11 +21,7 @@
     </insert>
 
     <select id="getTodo" resultMap="todoResultMap">
-        select t.id, t.content, t.deadline, c.content as category, t.category_id, t.created_at, t.updated_at, t.is_deleted
-        from todo t
-                 left outer join category c on t.category_id = c.id
-                 join todo_user_mapping tum on t.id = tum.todo_id and tum.user_id = #{userId}
-        where t.is_deleted = false
+        select * from todo where id = #{id} and is_deleted = false
     </select>
 
     <select id="getTodoList" resultMap="todoResultMap">
@@ -123,10 +119,13 @@
         where id = #{id}
     </update>
 
-    <insert id="teamWriteTodo">
+    <insert id="teamWriteTodo" parameterType="org.example.domain.Todo">
         insert into todo
             (content, deadline, category_id, team_id)
         values (#{content}, #{deadline}, #{categoryId}, #{teamId})
+        <selectKey resultType="Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
 </mapper>

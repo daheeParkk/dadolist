@@ -29,4 +29,11 @@ public class JWTServiceImpl implements JWTService {
 
         return jwtToken;
     }
+
+    @Override
+    public void deleteRefreshToken(String refreshToken) {
+
+        Long userId = jwtUtil.isTokenExpired(refreshToken);
+        tokenMapper.deleteRefreshToken(userId);
+    }
 }

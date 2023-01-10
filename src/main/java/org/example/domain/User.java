@@ -31,7 +31,4 @@ public class User extends BaseEntity {
     @ApiModelProperty(example = "권한")
     private Long authority;
 
-    @ApiModelProperty(example = "속한 팀")
-    private String teams;
-
 }

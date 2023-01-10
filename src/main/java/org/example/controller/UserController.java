@@ -29,6 +29,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @NoAuth
     @ApiOperation(value = "관리자 가입")
     @PostMapping("/admin")
     public ResponseEntity<User> createAdmin(@RequestBody User user) {

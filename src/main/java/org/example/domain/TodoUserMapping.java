@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TodoUserMapping extends BaseEntity{
+public class TodoUserMapping extends BaseEntity {
 
     private Long id;
 

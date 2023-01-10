@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Team extends BaseEntity{
+public class Team extends BaseEntity {
 
     @ApiModelProperty(example = "식별 아이디")
     private Long id;

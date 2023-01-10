@@ -14,7 +14,7 @@
     <select id="selectTeamByTeamName" resultMap="teamResultMap">
         select *
         from team
-        where name = #{teamName} and is_deleted = false
+        where name = #{name} and is_deleted = false
     </select>
 
     <select id="getTeam" resultMap="teamResultMap">
@@ -28,7 +28,7 @@
     <insert id="createTeam" parameterType="org.example.domain.Team">
         insert into team
             (name)
-        values (#{teamName})
+        values (#{name})
         <selectKey resultType="Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>

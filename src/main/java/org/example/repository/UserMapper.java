@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 
-    void createAdmin(@Param("id") Long id,@Param("checkAdmin") Boolean checkAdmin);
+    void createAdmin(@Param("id") Long id, @Param("checkAdmin") Boolean checkAdmin);
 
     void createUser(User user);
 

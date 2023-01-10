@@ -14,7 +14,7 @@ public class BcryptUtil {
 
     public void checkPassword(String password, String dbPassword) {
 
-        if (!BCrypt.checkpw(password,dbPassword)){
+        if (!BCrypt.checkpw(password, dbPassword)) {
             throw new DifferentPasswordException("different password");
         }
 

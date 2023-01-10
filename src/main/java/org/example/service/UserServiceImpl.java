@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     public UserServiceImpl(UserMapper userMapper, BcryptUtil bcryptUtil, JWTUtil jwtUtil, TeamMapper teamMapper, TeamUserMapper teamUserMapper,
-                           TokenMapper tokenMapper){
+                           TokenMapper tokenMapper) {
 
         this.userMapper = userMapper;
         this.bcryptUtil = bcryptUtil;

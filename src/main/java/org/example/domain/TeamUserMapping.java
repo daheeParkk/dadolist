@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TeamUserMapping extends BaseEntity{
+public class TeamUserMapping extends BaseEntity {
 
     private Long id;
 

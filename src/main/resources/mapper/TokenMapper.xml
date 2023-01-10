@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.repository.TokenMapper">
 
-    <resultMap id="tokenResultMap" type="org.example.dto.token.JwtToken">
+    <resultMap id="tokenResultMap" type="org.example.domain.Token">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="refresh_token" property="refreshToken" />
@@ -21,5 +21,10 @@
     <delete id="deleteRefreshToken">
         delete from token where user_id = #{id}
     </delete>
+
+    <select id="getRefreshToken" resultMap="tokenResultMap">
+        select * from token
+        where user_id = #{id}
+    </select>
 
 </mapper>
